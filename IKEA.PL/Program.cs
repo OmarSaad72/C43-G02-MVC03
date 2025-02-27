@@ -1,4 +1,5 @@
 using IKEA.DAL.Presistance.Data;
+using IKEA.DAL.Presistance.Repositories.Department;
 using Microsoft.EntityFrameworkCore;
 
 namespace IKEA.PL
@@ -17,6 +18,8 @@ namespace IKEA.PL
                 //OptionsBuilder.UseSqlServer("Server=.;DataBase=IKEA;Trusted_Connection=True;TrustServerCertificate=True;");
                 OptionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             }));
+
+            builder.Services.AddScoped<IDepartmentRepo, IDepartmentRepo>();  //allow dependancy injection 
             #endregion
 
             var app = builder.Build();

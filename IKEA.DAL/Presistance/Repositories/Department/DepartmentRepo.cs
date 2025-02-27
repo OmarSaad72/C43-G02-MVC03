@@ -37,6 +37,11 @@ namespace IKEA.DAL.Presistance.Repositories.Department
             return _DbContext.Department.ToList();
         }
 
+        public IQueryable<Departments> GetAllQuerable()
+        {
+            return _DbContext.Department;
+        }
+
         public Departments? GetById(int id)
         {
             return _DbContext.Department.Find(id);

@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace IKEA.DAL.Presistance.Repositories.Department
 {
-    internal interface IDepartmentRepo
+    public interface IDepartmentRepo
     {
         IEnumerable<Departments> GetAll(bool WhithNoTracking = true);
+        IQueryable<Departments> GetAllQuerable();
         Departments? GetById(int id);
         int Add(Departments entity);
         int Update(Departments entity);
