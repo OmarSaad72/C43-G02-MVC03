@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IKEA.DAL.Presistance.Repositories.Department
 {
-    internal class DepartmentRepo : IDepartmentRepo
+    public class DepartmentRepo : IDepartmentRepo
     {
         private readonly AppDbContext _DbContext;
         public DepartmentRepo(AppDbContext dbContext) //Ask CLR for object from AppDbContext implicitly
