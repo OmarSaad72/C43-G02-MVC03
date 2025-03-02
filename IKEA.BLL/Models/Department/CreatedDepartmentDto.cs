@@ -12,6 +12,7 @@ namespace IKEA.BLL.Models.Department
         public string Name { get; set; } = null!; //null-forgiving operator
         public string Code { get; set; } = null!; //null-forgiving operator
         public string? Description { get; set; }
+        [Display(Name ="Creation Date")]
         public DateOnly CreationDate { get; set; }
     }
 }
