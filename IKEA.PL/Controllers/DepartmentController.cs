@@ -62,5 +62,27 @@ namespace IKEA.PL.Controllers
                 }
             }
         }
+        [HttpGet]
+        public IActionResult Details(int? Id)
+        {
+            if(Id == null)
+                return BadRequest();  // 400
+            var department = _departmentService.GetDepartmentsById(Id.Value);
+            if (department == null)
+            {
+                return NotFound();  // 404
+            }
+            return View(department);
+        }
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+                return BadRequest();
+            var department = _departmentService.GetDepartmentsById(id.Value);
+            if (department == null)
+                return NotFound();
+            return View(department);
+        }
     }
 }

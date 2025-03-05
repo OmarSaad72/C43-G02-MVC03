@@ -9,6 +9,7 @@ namespace IKEA.BLL.Models.Department
 {
     public class CreatedDepartmentDto
     {
+        [Required(ErrorMessage = "Name Is Required")]
         public string Name { get; set; } = null!; //null-forgiving operator
         public string Code { get; set; } = null!; //null-forgiving operator
         public string? Description { get; set; }
