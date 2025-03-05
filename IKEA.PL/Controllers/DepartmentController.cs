@@ -121,6 +121,7 @@ namespace IKEA.PL.Controllers
             }
             return View(edit);
         }
+        [HttpGet]
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -130,6 +131,7 @@ namespace IKEA.PL.Controllers
                 return NotFound();
             return View(department);
         }
+        [HttpPost]
         public IActionResult Delete(int id)
         {
             var result = _departmentService.DeleteDepartment(id);
