@@ -122,36 +122,33 @@ namespace IKEA.PL.Controllers
             return View(edit);
         }
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int? id) 
         {
-            if (id == null)
+            if (id is null)
                 return BadRequest();
-            var department = _departmentService.GetDepartmentsById(id.Value);
-            if (department == null)
+            var DeleteDep = _departmentService.GetDepartmentsById(id.Value);
+            if(DeleteDep is null)
                 return NotFound();
-            return View(department);
+            return View(DeleteDep);
         }
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            var result = _departmentService.DeleteDepartment(id);
+            var DeleteDep = _departmentService.DeleteDepartment(id);
             var message = string.Empty;
             try
             {
-                if (result)
+                if (DeleteDep)
                     return RedirectToAction(nameof(Index));
-                else
-                {
-                    message = "Department Can't Be Deleted!";
-                }
+                message = "An Error Happend, Can't Deleted";
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                message = _Env.IsDevelopment() ? ex.Message : "Department Can't Be Deleted!";
+                message =_Env.IsDevelopment() ? ex.Message : "An Error Happend, Can't Deleted";
             }
             ModelState.AddModelError(string.Empty, message);
-            return View("Index");
+            return View(nameof(Index));
         }
     }
 }

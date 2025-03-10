@@ -1,4 +1,4 @@
-﻿@model DepartmentsDetailsReturnDto
+﻿@model DepartmentsDetailsReturnDto;
 @{
     ViewData["Title"] = "Delete";
 }
@@ -58,13 +58,11 @@
             <input asp-for="LastModifiedOn" class="form-control" readonly />
         </div>
     </div>
-
     <div class="mt-4">
-        <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
-            <input type="submit" asp-action="=Delete"  class="btn btn-success" value="Delete">
-            <a asp-action="Index" class="btn btn-secondary">Back To list</a>
+        <form method="post" asp-action="Delete" asp-route-id="@Model.Id">
+            <input type="submit" class="btn btn-danger" value="Delete" />
+            <a asp-action="Index" class="btn btn-dark">Back To list</a>
         </form>
     </div>
 </div>
-
 

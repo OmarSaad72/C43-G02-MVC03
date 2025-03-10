@@ -63,7 +63,8 @@ namespace IKEA.BLL.Services.Department
             {
                 Id = d.Id,
                 Name = d.Name,
-                Description = d.Description,
+                Code = d.Code,
+                //Description = d.Description,
                 CreationDate = d.CreationDate
             }).AsNoTracking().ToList();
             return department;

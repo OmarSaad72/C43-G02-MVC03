@@ -1,4 +1,5 @@
 ﻿using IKEA.DAL.Models.Departments;
+using IKEA.DAL.Models.Employees;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,6 @@ namespace IKEA.DAL.Presistance.Data
         //    optionsBuilder.UseSqlServer("Server=.;DataBase=IKEA;Trusted_Connection=True;TrustServerCertificate=True;");
         //}
         public DbSet<Departments> Department { get; set; }
-
+        public DbSet<Employee> Employees { get; set; }
     }
 }
