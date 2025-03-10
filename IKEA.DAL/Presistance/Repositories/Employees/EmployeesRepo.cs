@@ -1,5 +1,7 @@
 ﻿using IKEA.DAL.Models.Departments;
+using IKEA.DAL.Models.Employees;
 using IKEA.DAL.Presistance.Data;
+using IKEA.DAL.Presistance.Repositories.Department;
 using IKEA.DAL.Presistance.Repositories.Generics;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,11 +10,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IKEA.DAL.Presistance.Repositories.Department
+namespace IKEA.DAL.Presistance.Repositories.Employees
 {
-    public class DepartmentRepo : GenericRepo<Departments>, IDepartmentRepo
+    public class EmployeesRepo : GenericRepo<Employee>, IEmployeesRepo
     {
-        public DepartmentRepo(AppDbContext dbContext): base(dbContext) 
+        public EmployeesRepo(AppDbContext dbContext) : base(dbContext)
         {
             
         }
