@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace IKEA.DAL.Presistance.Repositories.Generics
 {
-    public class GenericRepo<T> where T : ModelBase
+    public class GenericRepo<T> : IGenericRepo<T> where T : ModelBase
     {
         private readonly AppDbContext _DbContext;
         public GenericRepo(AppDbContext dbContext) //Ask CLR for object from AppDbContext implicitly
@@ -25,17 +25,20 @@ namespace IKEA.DAL.Presistance.Repositories.Generics
 
         public int Delete(T entity)
         {
-            _DbContext.Set<T>().Remove(entity);
+            //_DbContext.Set<T>().Remove(entity);
+            //return _DbContext.SaveChanges();
+            entity.IsDeleted = true;
+            _DbContext.Set<T>().Update(entity);
             return _DbContext.SaveChanges();
         }
 
         public IEnumerable<T> GetAll(bool WhithNoTracking = true)
         {
             if (WhithNoTracking)
-                return _DbContext.Set<T>().AsNoTracking().ToList();
             {
+                return _DbContext.Set<T>().Where(Z => !Z.IsDeleted).AsNoTracking().ToList();
             }
-            return _DbContext.Set<T>().ToList();
+            return _DbContext.Set<T>().Where(Z => !Z.IsDeleted).ToList();
         }
 
         public IQueryable<T> GetAllQuerable()

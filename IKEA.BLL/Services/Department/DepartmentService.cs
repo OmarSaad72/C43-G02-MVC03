@@ -37,7 +37,7 @@ namespace IKEA.BLL.Services.Department
         public bool DeleteDepartment(int id)
         {
             var dep = _departmentrepo.GetById(id);
-            if (dep != null) 
+            if (dep != null)
             {
                 int RowsAffected = _departmentrepo.Delete(dep);
                 return RowsAffected > 0;
@@ -59,7 +59,7 @@ namespace IKEA.BLL.Services.Department
             //        Name = item.Name,
             //    };
             //}
-            var department = _departmentrepo.GetAllQuerable().Select(d => new DepartmentToReturnDTO
+            var department = _departmentrepo.GetAllQuerable().Where(d => !d.IsDeleted).Select(d => new DepartmentToReturnDTO
             {
                 Id = d.Id,
                 Name = d.Name,
@@ -86,9 +86,10 @@ namespace IKEA.BLL.Services.Department
                     LastModifiedOn = department.LastModifiedOn,
                     Description = department.Description,
                     IsDeleted = department.IsDeleted,
-                    CreationDate= department.CreationDate,
+                    CreationDate = department.CreationDate,
                 };
-            } return null;
+            }
+            return null;
         }
 
         public int UpdateDepartment(UpdateDepartmentDto departments)
@@ -105,7 +106,6 @@ namespace IKEA.BLL.Services.Department
                 LastModifiedOn = DateTime.UtcNow,
             };
             return _departmentrepo.Update(dep);
-
         }
     }
 }
