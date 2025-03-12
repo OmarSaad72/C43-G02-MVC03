@@ -87,7 +87,6 @@ namespace IKEA.BLL.Services.Employees
                     CreatedOn = Employees.CreatedOn,
                     LastModifiedby = Employees.LastModifiedby,
                     LastModifiedOn = Employees.LastModifiedOn,
-                    IsDeleted = Employees.IsDeleted,
                 };
             }
             return null;
