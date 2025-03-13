@@ -1,21 +1,22 @@
-﻿@model CreatedEmployeeDto;
+﻿@model UpdateEmployeeDto;
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
+
 <div class="justify-content-center align-content-center mt-3">
-    <h1 class="col-8 m-4">Create New Employee</h1>
-    <form method="post" asp-action="Create" class="col-6">
+    <h1 class="col-8 m-4">Edit Employee</h1>
+    <form method="post" asp-action="Edit" class="col-8">
         @* Defualt Method ==> Post *@
         <div asp-validation-summary="ModelOnly"></div>
         <div class="form-group mb-3">
             <label class="form-label" asp-for="Name">Name</label>
             <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>  @*  Code Is Required{Validation} *@
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group mb-1">
             <label class="form-label" asp-for="Email">Email</label>
             <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span> @*  Name Is Required{Validation} *@
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="form-group mb-1">
             <label class="form-label" asp-for="Address">Address</label>
@@ -26,20 +27,20 @@
             <label class="form-label" asp-for="PhoneNumber">PhoneNumber</label>
             <input asp-for="PhoneNumber" class="form-control" />
             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-        </div><div class="form-group mb-1">
+        </div>
+        <div class="form-group mb-1">
             <label class="form-label" asp-for="Age">Age</label>
             <input asp-for="Age" class="form-control" />
             <span asp-validation-for="Age" class="text-danger"></span>
         </div>
         <div class="form-group mb-1">
+            <label class="form-label" asp-for="HiringDate">HiringDate</label>
+            <input asp-for="HiringDate" class="form-control" />
+            <span asp-validation-for="HiringDate" class="text-danger"></span>
+        </div> <div class="form-group mb-1">
             <label class="form-label" asp-for="Salary">Salary</label>
             <input asp-for="Salary" class="form-control" />
             <span asp-validation-for="Salary" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-1">
-            <label class="form-label" asp-for="HiringDate">HiringDate</label>
-            <input asp-for="HiringDate" class="form-control" type="date" />
-            <span asp-validation-for="HiringDate" class="text-danger"></span>
         </div>
         <div class="form-group mb-1">
             <label class="form-label" asp-for="Gender">Gender</label>
@@ -60,11 +61,11 @@
             <span asp-validation-for="EmployeeType" class="text-danger"></span>
         </div>
         <div class="form-group mb-3">
-            <input asp-for="IsActive" class="form-check-input"/>
+            <input asp-for="IsActive" class="form-check-input" />
             <label class="col-form-label" asp-for="IsActive"> Is Active</label>
         </div>
         <div class="mt-4 m-auto">
-            <input class="btn btn-primary" type="submit" value="Create" />
+            <input class="btn btn-success" type="submit" value="Edit" />
             <a asp-action="Index" class="btn btn-dark">Back To List</a>
         </div>
     </form>

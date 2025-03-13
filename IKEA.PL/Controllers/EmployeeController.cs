@@ -1,4 +1,5 @@
-﻿using IKEA.BLL.ModelsDTOS.Employees;
+﻿using IKEA.BLL.Models.Common.Enums;
+using IKEA.BLL.ModelsDTOS.Employees;
 using IKEA.BLL.Services.Employees;
 using IKEA.DAL.Presistance.Data.Migrations;
 using IKEA.PL.View_Models.Employee;
@@ -81,25 +82,33 @@ namespace IKEA.PL.Controllers
         {
             if (id == null)
                 return BadRequest();
-            var Employee = _EmployeeService.GetEmployeeById(id.Value);
-            if (Employee == null)
+            var employee = _EmployeeService.GetEmployeeById(id.Value);
+            if (employee == null)
                 return NotFound();
-            return View(new EmployeeEditVM()
+            return View(new UpdateEmployeeDto()
             {
+                EmployeeType = Enum.TryParse<EmployeeType>(employee.EmployeeType, true, out var employeetype) ? employeetype : default,
+                Gender = Enum.TryParse<Gender>(employee.Gender, true, out var gender) ? gender : default,
+                Name = employee.Name,
+                Address = employee.Address,
+                Email = employee.Email,
+                Age = employee.Age,
+                IsActive = employee.IsActive,
+                PhoneNumber = employee.PhoneNumber,
+                HiringDate = employee.HiringDate,
+                Id = id.Value,
+                Salary = employee.Salary,
             });
         }
         [HttpPost]
-        public IActionResult Edit(int id, EmployeeEditVM edit)
+        public IActionResult Edit(int id, UpdateEmployeeDto edit)
         {
             if (!ModelState.IsValid)
                 return View(edit);
             var message = string.Empty;
             try
             {
-                var result = _EmployeeService.UpdateEmployee(new UpdateEmployeeDto()
-                {
-                    Id = id,
-                });
+                var result = _EmployeeService.UpdateEmployee(edit);
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
                 else
@@ -114,12 +123,12 @@ namespace IKEA.PL.Controllers
             return View(edit);
         }
         [HttpGet]
-        public IActionResult Delete(int? id) 
+        public IActionResult Delete(int? id)
         {
             if (id is null)
                 return BadRequest();
             var DeleteDep = _EmployeeService.GetEmployeeById(id.Value);
-            if(DeleteDep is null)
+            if (DeleteDep is null)
                 return NotFound();
             return View(DeleteDep);
         }
@@ -137,7 +146,7 @@ namespace IKEA.PL.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                message =_Env.IsDevelopment() ? ex.Message : "An Error Happend, Can't Deleted";
+                message = _Env.IsDevelopment() ? ex.Message : "An Error Happend, Can't Deleted";
             }
             ModelState.AddModelError(string.Empty, message);
             return View(nameof(Index));
