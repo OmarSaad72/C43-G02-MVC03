@@ -32,6 +32,7 @@ namespace IKEA.PL.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken] //Action Filter
         public IActionResult Create(CreatedEmployeeDto dto)
         {
             if (!ModelState.IsValid)
@@ -101,6 +102,7 @@ namespace IKEA.PL.Controllers
             });
         }
         [HttpPost]
+        [ValidateAntiForgeryToken] //Action Filter
         public IActionResult Edit(int id, UpdateEmployeeDto edit)
         {
             if (!ModelState.IsValid)
@@ -133,6 +135,7 @@ namespace IKEA.PL.Controllers
             return View(DeleteDep);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken] //Action Filter
         public IActionResult Delete(int id)
         {
             var DeleteDep = _EmployeeService.DeleteEmployee(id);
