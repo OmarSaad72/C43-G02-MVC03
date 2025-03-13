@@ -19,6 +19,7 @@ namespace IKEA.BLL.ModelsDTOS.Employees
         [EmailAddress]
         public string? Email { get; set; }
         public string Gender { get; set; } = null!;
+        [Display(Name ="Employee Type")]
         public string EmployeeType { get; set; } = null!;
     }
 }

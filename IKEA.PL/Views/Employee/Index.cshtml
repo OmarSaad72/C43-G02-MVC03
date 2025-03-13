@@ -31,11 +31,11 @@
                 var modalId = $"deleteModal_{Employee.Id}";
                 <tr>
                     <td>@Employee.Name</td>
-                    <td>@Employee.Email</td>
+                    <td>@Html.DisplayFor(e => Employee.Email)</td>
                     <td>@Employee.EmployeeType</td>
                     <td>@Employee.Age</td>
                     <td>@Employee.Gender</td>
-                    <td>@Employee.Salary</td>
+                    <td>@Html.DisplayFor(e => Employee.Salary)</td>
                     <td>@Employee.IsActive</td>
                     <td>
                         <a asp-controller="Employee" asp-action="Details" asp-route-id="@Employee.Id" class="btn btn-warning">
@@ -49,7 +49,7 @@
                     </td>
                     @* <td> *@
                     @*     <a asp-controller="Employee" asp-action="Delete" asp-route-id="@Employee.Id" class="btn btn-danger"> *@
-                    @*         <i class="fas fa-trash"></i>Delete *@
+                    @*         <i class="fas fa-edit"></i>Delete *@
                     @*     </a> *@
                     @* </td> *@
                     <td>
