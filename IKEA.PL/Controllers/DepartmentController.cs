@@ -32,14 +32,20 @@ namespace IKEA.PL.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter
-        public IActionResult Create(CreatedDepartmentDto dto)
+        public IActionResult Create(DepartmentVM dto)
         {
             if (!ModelState.IsValid)
                 return View(dto);
             var message = string.Empty;
             try
             {
-                var result = _departmentService.CreateDepartment(dto);
+                var result = _departmentService.CreateDepartment(new CreatedDepartmentDto
+                {
+                    Code = dto.Code,
+                    Name = dto.Name,
+                    Description = dto.Description,
+                    CreationDate = dto.CreationDate,
+                });
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
                 else
@@ -85,7 +91,7 @@ namespace IKEA.PL.Controllers
             var department = _departmentService.GetDepartmentsById(id.Value);
             if (department == null)
                 return NotFound();
-            return View(new DepartmentEditVM()
+            return View(new DepartmentVM()
             {
                 Code = department.Code,
                 Name = department.Name,
@@ -95,7 +101,7 @@ namespace IKEA.PL.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter
-        public IActionResult Edit(int id, DepartmentEditVM edit)
+        public IActionResult Edit(int id, DepartmentVM edit)
         {
             if (!ModelState.IsValid)
                 return View(edit);

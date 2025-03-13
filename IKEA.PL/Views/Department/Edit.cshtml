@@ -1,44 +1,18 @@
-﻿@model DepartmentEditVM;
+﻿@model DepartmentVM;
 @{
     ViewData["Title"] = "Edit";
+    ViewBag.Action = "Edit";
 }
 
 <div class="justify-content-center align-content-center mt-3">
-    <h1 class="col-8 m-4">Edit_Department</h1>
-    <form method="post" asp-action="Edit" class="col-8"> @* Defualt Method ==> Post *@
-        <div asp-validation-summary="ModelOnly"></div>
-        <div class="form-group mb-3">
-            @* <label class="form-label" for="Code">Code</label> *@
-            @* <input id="Code" name="Code" type="text"/> *@
-            <label class="form-label" asp-for="Code">Code</label>
-            <input asp-for="Code" class="form-control" />
-            <span asp-validation-for="Code" class="text-danger"></span>  @*  Code Is Required{Validation} *@
-        </div>
-        <div class="form-group mb-1">
-            <label class="form-label" asp-for="Name">Name</label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span> @*  Name Is Required{Validation} *@
-        </div>
-        <div class="form-group mb-3">
-            <label class="form-label" asp-for="Description">Description</label>
-            <textarea class="form-control" asp-for="Description"></textarea>
-        </div>
-        <div class="form-group mb-3">
-            <label class="form-label" asp-for="CreationDate">CreationDate</label>
-            <input asp-for="CreationDate" type="date" class="form-control" />
-        </div>
-        <div class="mt-4 m-auto">
-            <input class="btn btn-success" type="submit" value="Edit" />
-            <a asp-action="Index" class="btn btn-dark">Back To List</a>
-        </div>
-    </form>
+    <h1 class="col-8 m-4">Edit Department</h1>
+    <partial name="Partials/CreateEditDepartmentPartial" />
+
 </div>
 
 @section Validation
 {
-    <script src="~/lib/jquery-validation/jquery.validate.min.js"></script>  @*Production Mode *@
-    @* <script src="~/lib/jquery-validation/jquery.validate.js"></script>*@ @*Developed Mode *@
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    @* <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script> *@
+    <partial name="_ValidationScriptsPartial" />
+
 }
 

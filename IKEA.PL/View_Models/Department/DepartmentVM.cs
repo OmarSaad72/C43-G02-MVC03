@@ -2,7 +2,7 @@
 
 namespace IKEA.PL.View_Models.Department
 {
-    public class DepartmentEditVM
+    public class DepartmentVM
     {
         public string Name { get; set; } = null!; //null-forgivenees operator
         public string Code { get; set; } = null!; //null-forgivenees operator

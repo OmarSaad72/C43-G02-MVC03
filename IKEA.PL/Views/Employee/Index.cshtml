@@ -37,29 +37,14 @@
                     <td>@Employee.Gender</td>
                     <td>@Html.DisplayFor(e => Employee.Salary)</td>
                     <td>@Employee.IsActive</td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="Details" asp-route-id="@Employee.Id" class="btn btn-warning">
-                            <i class="fas fa-eye"></i>Details
-                        </a>
-                    </td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="Edit" asp-route-id="@Employee.Id" class="btn btn-success">
-                            <i class="fas fa-edit"></i>Update
-                        </a>
-                    </td>
-                    @* <td> *@
-                    @*     <a asp-controller="Employee" asp-action="Delete" asp-route-id="@Employee.Id" class="btn btn-danger"> *@
-                    @*         <i class="fas fa-edit"></i>Delete *@
-                    @*     </a> *@
-                    @* </td> *@
-                    <td>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@modalId">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                    </td>
+                    <partial name="_ButtonPartial" model="Employee.Id" />
+                    @*     @{ *@
+                    @*         Html.RenderPartial("_ButtonPartial", Employee.Id); *@
+                    @*     } *@
+                    @*     @Html.Partial("_ButtonPartial", Employee.Id) *@
                 </tr>
                 <!-- Modal -->
-                <div class="modal fade" id="@modalId" tabindex="-1" aria-labelledby="exampleModalLabel_@Employee.Id" aria-hidden="true">
+                <div class="modal fade" id="modalId" tabindex="-1" aria-labelledby="exampleModalLabel_@Employee.Id" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
