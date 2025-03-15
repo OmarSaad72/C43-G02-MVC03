@@ -1,7 +1,10 @@
 ﻿using IKEA.BLL.Models.Common.Enums;
 using IKEA.DAL.Models;
+using IKEA.DAL.Models.Departments;
+using IKEA.DAL.Presistance.Data.Migrations;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,5 +23,21 @@ namespace IKEA.DAL.Models.Employees
         public DateOnly HiringDate { get; set; }
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
+
+        #region Manage
+        /******************************Department Relation (Manage 1: 1)******************************/
+        [InverseProperty(nameof(Models.Departments.Departments.Manager))]
+        public virtual Departments.Departments? DepartmentManage { get; set; }
+        [ForeignKey(nameof(DepartmentManage))]
+        public int? DeptManageId { get; set; }
+        #endregion
+
+        #region Work
+        /******************************Department Relation (Work 1: M)******************************/
+        [InverseProperty(nameof(Models.Departments.Departments.Employees))]
+        public virtual Departments.Departments? Department { get; set; } //Navigational Property ==> One Side
+        [ForeignKey(nameof(Employee.Department))]
+        public int? DepartmentDeptId { get; set; }
+        #endregion
     }
 }
