@@ -1,6 +1,7 @@
 ﻿using IKEA.BLL.Models.Common.Enums;
 using IKEA.BLL.ModelsDTOS.Employees;
 using IKEA.BLL.Services.Employees;
+using IKEA.DAL.Models.Employees;
 using IKEA.DAL.Presistance.Data.Migrations;
 using IKEA.PL.View_Models.Employee;
 using Microsoft.AspNetCore.Mvc;
@@ -33,21 +34,33 @@ namespace IKEA.PL.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter
-        public IActionResult Create(CreatedEmployeeDto dto)
+        public IActionResult Create(EditCreateEmployeeDto employee)
         {
             if (!ModelState.IsValid)
-                return View(dto);
+                return View(employee);
             var message = string.Empty;
             try
             {
-                var result = _EmployeeService.CreateEmployee(dto);
+                var result = _EmployeeService.CreateEmployee(new CreatedEmployeeDto
+                {
+                    EmployeeType = employee.EmployeeType,
+                    Gender = employee.Gender,
+                    Name = employee.Name,
+                    Address = employee.Address,
+                    Email = employee.Email,
+                    Age = employee.Age,
+                    IsActive = employee.IsActive,
+                    PhoneNumber = employee.PhoneNumber,
+                    HiringDate = employee.HiringDate,
+                    Salary = employee.Salary,
+                });
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
                 else
                 {
                     message = "Employee Can't Be Created!";
                     ModelState.AddModelError(string.Empty, message);
-                    return View(dto);
+                    return View(employee);
                 }
             }
             catch (Exception ex)
@@ -57,7 +70,7 @@ namespace IKEA.PL.Controllers
                 if (_Env.IsDevelopment())
                 {
                     message = ex.Message;
-                    return View(dto);
+                    return View(employee);
                 }
                 else
                 {
@@ -86,7 +99,7 @@ namespace IKEA.PL.Controllers
             var employee = _EmployeeService.GetEmployeeById(id.Value);
             if (employee == null)
                 return NotFound();
-            return View(new UpdateEmployeeDto()
+            return View(new EditCreateEmployeeDto()
             {
                 EmployeeType = Enum.TryParse<EmployeeType>(employee.EmployeeType, true, out var employeetype) ? employeetype : default,
                 Gender = Enum.TryParse<Gender>(employee.Gender, true, out var gender) ? gender : default,
@@ -103,7 +116,7 @@ namespace IKEA.PL.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter
-        public IActionResult Edit(int id, UpdateEmployeeDto edit)
+        public IActionResult Edit(int id, EditCreateEmployeeDto edit)
         {
             if (!ModelState.IsValid)
                 return View(edit);

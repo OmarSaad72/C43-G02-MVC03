@@ -1,5 +1,5 @@
-﻿@model DepartmentsDetailsReturnDto;
-<ul class="nav nav-tabs" id="departmentTabs" role="tablist">
+﻿@model EmployeesDetailsReturnDto
+<ul class="nav nav-tabs" id="EmployeeTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <a class="nav-link active" id="general-tab" data-bs-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General</a>
     </li>
@@ -14,22 +14,33 @@
 
         <div class="row">
             <div class="form-group col-6">
-                <label class="col-form-label" asp-for="Code"></label>
-                <input asp-for="Code" class="form-control" readonly />
-            </div>
-            <div class="form-group col-6">
-                <label class="col-form-label" asp-for="Name"></label>
+                <label class="col-form-label" asp-for="Name">Name</label>
                 <input asp-for="Name" class="form-control" readonly />
             </div>
-            <div class="form-group col-12">
-                <label class="col-form-label" asp-for="Description"></label>
-                <input asp-for="Description" class="form-control" readonly />
+            <div class="form-group col-6">
+                <label class="col-form-label" asp-for="Email">Email</label>
+                <input asp-for="Email" class="form-control" readonly />
             </div>
             <div class="form-group col-12">
-                <label class="col-form-label" asp-for="CreationDate"></label>
-                <input asp-for="CreationDate" class="form-control" readonly />
+                <label class="col-form-label" asp-for="EmployeeType">EmployeeType</label>
+                <input asp-for="EmployeeType" class="form-control" readonly />
             </div>
-
+            <div class="form-group col-12">
+                <label class="col-form-label" asp-for="Age">Age</label>
+                <input asp-for="Age" class="form-control" readonly />
+            </div>
+            <div class="form-group col-12">
+                <label class="col-form-label" asp-for="Gender">Gender</label>
+                <input asp-for="Gender" class="form-control" readonly />
+            </div>
+            <div class="form-group col-12">
+                <label class="col-form-label" asp-for="Salary">Salary</label>
+                <input asp-for="Salary" class="form-control" readonly />
+            </div>
+            <div class="form-group col-12">
+                <label class="col-form-label" asp-for="IsActive">IsActive</label>
+                <input asp-for="IsActive" class="form-check-input" readonly />
+            </div>
         </div>
     </div>
 
@@ -52,20 +63,21 @@
             <input asp-for="LastModifiedOn" class="form-control" readonly />
         </div>
     </div>
-    @if (ViewData["Title"] as string == "Details")
+    @if( ViewData["Title"] as string == "Details")
     {
-        <div class="mt-4">
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success">Edit</a> |
-            <a asp-action="Index" class="btn btn-outline-dark">Back To list</a>
-        </div>
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success">Edit</a> |
+        <a asp-action="Index" class="btn btn-secondary">Back To list</a>
+    </div>
     }
     else
     {
-        <div class="mt-4">
-            <form method="post" asp-action="Delete" asp-route-id="@Model.Id">
-                <input type="submit" class="btn btn-danger" value="Delete" />
-                <a asp-action="Index" class="btn btn-dark">Back To list</a>
-            </form>
-        </div>
+    <div class="mt-2">
+        <form method="post" asp-action="Delete" asp-route-id="@Model.Id">
+            <input type="submit" class="btn btn-danger" value="Delete" />
+            <a asp-action="Index" class="btn btn-dark">Back To list</a>
+        </form>
+    </div>
     }
 </div>
+

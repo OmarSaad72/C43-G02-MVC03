@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IKEA.BLL.ModelsDTOS.Employees
 {
-    public class UpdateEmployeeDto
+    public class EditCreateEmployeeDto
     {
         public int Id { get; set; }
         [Required]

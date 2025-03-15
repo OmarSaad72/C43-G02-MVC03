@@ -92,7 +92,7 @@ namespace IKEA.BLL.Services.Employees
             return null;
         }
 
-        public int UpdateEmployee(UpdateEmployeeDto Employee)
+        public int UpdateEmployee(EditCreateEmployeeDto Employee)
         {
             var employee = new Employee()
             {

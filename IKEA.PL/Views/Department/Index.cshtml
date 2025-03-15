@@ -27,17 +27,22 @@
             {
                 var modalId = $"deleteModal_{department.Id}";
                 <tr>
-                    <td>@department.Code</td>  
+                    <td>@department.Code</td>
                     <td>@department.Name</td>
                     <td>@department.CreationDate</td>
-                    <partial name="_ButtonPartial" model="department.Id"/>  
+                    <partial name="_ButtonPartial" model="department.Id" />
                     @* @{ *@
                     @*     Html.RenderPartial("_ButtonPartial", department.Id); *@
                     @* } *@
                     @* @Html.Partial("_ButtonPartial",department.Id) *@
+                    <td>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@modalId">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
                 </tr>
                 <!-- Modal -->
-                <div class="modal fade" id="modalId" tabindex="-1" aria-labelledby="exampleModalLabel_@department.Id" aria-hidden="true">
+                <div class="modal fade" id="@modalId" tabindex="-1" aria-labelledby="exampleModalLabel_@department.Id" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">

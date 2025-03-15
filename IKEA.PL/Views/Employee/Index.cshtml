@@ -3,7 +3,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1 class="">All_Employees</h1>
+<h1 class="">All Employees</h1>
 <br />
 <br />
 <a asp-action="Create" class="btn btn-primary">Tab To Create New Employee</a>
@@ -42,9 +42,14 @@
                     @*         Html.RenderPartial("_ButtonPartial", Employee.Id); *@
                     @*     } *@
                     @*     @Html.Partial("_ButtonPartial", Employee.Id) *@
+                    <td>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@modalId">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
                 </tr>
                 <!-- Modal -->
-                <div class="modal fade" id="modalId" tabindex="-1" aria-labelledby="exampleModalLabel_@Employee.Id" aria-hidden="true">
+                <div class="modal fade" id="@modalId" tabindex="-1" aria-labelledby="exampleModalLabel_@Employee.Id" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
