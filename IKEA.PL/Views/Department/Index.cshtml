@@ -2,10 +2,26 @@
 @{
     ViewData["Title"] = "Index";
 }
-<div class="alert alert-info">
-    @ViewData["Message"]  @*==> @ViewBag.Message *@
-    @ViewBag.Message
-</div>
+@* <div class="alert alert-info"> *@
+@*     @ViewData["Message"]  @*==> @ViewBag.Message *@ 
+@*     @ViewBag.Message *@
+@* </div> *@
+@if (!string.IsNullOrEmpty(TempData["Message"] as string))
+{
+    <div aria-live="polite" aria-atomic="true" class="toast-container position-fixed p-3" style="bottom: 0; right: 0;">
+        <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi-xgE1vyBhDJQJNdJKhVjmraoRqSsBYiFHg&s" class="rounded me-2" width="30" height="30" alt="Success">
+                <strong class="me-auto text-success">Success!!</strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                @TempData["Message"]
+            </div>
+        </div>
+    </div>
+}
 <h1 class="">All Departments</h1>
 <br />
 <br />

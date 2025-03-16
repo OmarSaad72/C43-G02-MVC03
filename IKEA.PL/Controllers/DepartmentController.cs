@@ -49,7 +49,10 @@ namespace IKEA.PL.Controllers
                     CreationDate = dto.CreationDate,
                 });
                 if (result > 0)
+                {
+                    TempData["Message"] = "Department Created Successfully";
                     return RedirectToAction(nameof(Index));
+                }
                 else
                 {
                     message = "Department Can't Be Created!";
@@ -119,7 +122,10 @@ namespace IKEA.PL.Controllers
                     CreationDate = edit.CreationDate
                 });
                 if (result > 0)
+                {
+                    TempData["Message"] = "Department Updated successfully";
                     return RedirectToAction(nameof(Index));
+                }
                 else
                 {
                     message = "Department Can't Be Updated!";
