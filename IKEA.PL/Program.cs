@@ -18,6 +18,7 @@ namespace IKEA.PL
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<AppDbContext>((OptionsBuilder =>
             {
+                OptionsBuilder.UseLazyLoadingProxies();
                 //OptionsBuilder.UseSqlServer("Server=.;DataBase=IKEA;Trusted_Connection=True;TrustServerCertificate=True;");
                 OptionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             }));

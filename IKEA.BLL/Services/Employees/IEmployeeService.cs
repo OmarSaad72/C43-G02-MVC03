@@ -11,7 +11,7 @@ namespace IKEA.BLL.Services.Employees
     {
         IEnumerable<EmployeeToReturnDto> GetAllEmployees();
         EmployeesDetailsReturnDto? GetEmployeeById(int Id);
-        int CreateEmployee(CreatedEmployeeDto Employee);
+        int CreateEmployee(EditCreateEmployeeDto Employee);
         int UpdateEmployee(EditCreateEmployeeDto Employees);
         bool DeleteEmployee(int id);
     }

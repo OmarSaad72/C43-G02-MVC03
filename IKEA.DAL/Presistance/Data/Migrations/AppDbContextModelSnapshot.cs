@@ -93,9 +93,6 @@ namespace IKEA.DAL.Presistance.Data.Migrations
                     b.Property<int?>("DepartmentDeptId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DeptManageId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -138,10 +135,6 @@ namespace IKEA.DAL.Presistance.Data.Migrations
 
                     b.HasIndex("DepartmentDeptId");
 
-                    b.HasIndex("DeptManageId")
-                        .IsUnique()
-                        .HasFilter("[DeptManageId] IS NOT NULL");
-
                     b.ToTable("Employees");
                 });
 
@@ -149,23 +142,15 @@ namespace IKEA.DAL.Presistance.Data.Migrations
                 {
                     b.HasOne("IKEA.DAL.Models.Departments.Departments", "Department")
                         .WithMany("Employees")
-                        .HasForeignKey("DepartmentDeptId");
-
-                    b.HasOne("IKEA.DAL.Models.Departments.Departments", "DepartmentManage")
-                        .WithOne("Manager")
-                        .HasForeignKey("IKEA.DAL.Models.Employees.Employee", "DeptManageId");
+                        .HasForeignKey("DepartmentDeptId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Department");
-
-                    b.Navigation("DepartmentManage");
                 });
 
             modelBuilder.Entity("IKEA.DAL.Models.Departments.Departments", b =>
                 {
                     b.Navigation("Employees");
-
-                    b.Navigation("Manager")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

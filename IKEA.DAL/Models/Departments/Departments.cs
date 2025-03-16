@@ -16,16 +16,10 @@ namespace IKEA.DAL.Models.Departments
         public DateOnly CreationDate { get; set; }
 
         #region Work
-        //Works ==> 1 : M
-        [InverseProperty(nameof(Models.Employees.Employee.Department))]
+        //Works ==> 1 : M {M}
         public virtual ICollection<Employee> Employees { get; set; } = new HashSet<Employee>(); //   ==> Side Many
 
         #endregion
 
-        #region Manage
-        //Manage ==> 1 : 1
-        [InverseProperty(nameof(Employee.DepartmentManage))]
-        public virtual Employee Manager { get; set; } 
-        #endregion
     }
 }

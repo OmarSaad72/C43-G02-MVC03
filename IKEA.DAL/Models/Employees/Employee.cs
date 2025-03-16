@@ -24,19 +24,10 @@ namespace IKEA.DAL.Models.Employees
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
 
-        #region Manage
-        /******************************Department Relation (Manage 1: 1)******************************/
-        [InverseProperty(nameof(Models.Departments.Departments.Manager))]
-        public virtual Departments.Departments? DepartmentManage { get; set; }
-        [ForeignKey(nameof(DepartmentManage))]
-        public int? DeptManageId { get; set; }
-        #endregion
 
-        #region Work
-        /******************************Department Relation (Work 1: M)******************************/
-        [InverseProperty(nameof(Models.Departments.Departments.Employees))]
+        #region Work 
+        /******************************Department Relation (Work 1: M{1})******************************/
         public virtual Departments.Departments? Department { get; set; } //Navigational Property ==> One Side
-        [ForeignKey(nameof(Employee.Department))]
         public int? DepartmentDeptId { get; set; }
         #endregion
     }

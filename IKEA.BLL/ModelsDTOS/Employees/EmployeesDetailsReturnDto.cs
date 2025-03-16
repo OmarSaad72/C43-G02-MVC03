@@ -24,5 +24,6 @@ namespace IKEA.BLL.ModelsDTOS.Employees
         public DateTime CreatedOn { get; set; }
         public int LastModifiedby { get; set; }
         public DateTime LastModifiedOn { get; set; }
+        public string? Department { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace IKEA.BLL.Services.Employees
         {
             _Employeerepo = Employeerepo;
         }
-        public int CreateEmployee(CreatedEmployeeDto Employee)
+        public int CreateEmployee(EditCreateEmployeeDto Employee)
         {
             var emp = new Employee()
             {
@@ -36,6 +36,7 @@ namespace IKEA.BLL.Services.Employees
                 LastModifiedby = 1,
                 CreatedBy = 1,
                 LastModifiedOn = DateTime.UtcNow,
+                DepartmentDeptId = Employee.DepartmentDeptId
             };
             return _Employeerepo.Add(emp);
         }
@@ -53,7 +54,7 @@ namespace IKEA.BLL.Services.Employees
 
         public IEnumerable<EmployeeToReturnDto> GetAllEmployees()
         {
-            return _Employeerepo.GetAllQuerable().Where(e => !e.IsDeleted).Select(Employees => new EmployeeToReturnDto
+            return _Employeerepo.GetAllQuerable().Include(e => e.Department).Where(e => !e.IsDeleted).Select(Employees => new EmployeeToReturnDto
             {
                 Id = Employees.Id,
                 Name = Employees.Name,
@@ -62,7 +63,7 @@ namespace IKEA.BLL.Services.Employees
                 Salary = Employees.Salary,
                 Email = Employees.Email,
                 Gender = Employees.Gender.ToString(),
-                EmployeeType = Employees.EmployeeType.ToString()
+                EmployeeType = Employees.EmployeeType.ToString(),
             }).AsNoTracking().ToList();
         }
         public EmployeesDetailsReturnDto? GetEmployeeById(int Id)
@@ -87,6 +88,7 @@ namespace IKEA.BLL.Services.Employees
                     CreatedOn = Employees.CreatedOn,
                     LastModifiedby = Employees.LastModifiedby,
                     LastModifiedOn = Employees.LastModifiedOn,
+                    Department = Employees?.Department?.Name  // Lazy Loading
                 };
             }
             return null;
@@ -109,7 +111,8 @@ namespace IKEA.BLL.Services.Employees
                 EmployeeType = Employee.EmployeeType,
                 LastModifiedby = 1,
                 CreatedBy = 1,
-                LastModifiedOn = DateTime.UtcNow
+                LastModifiedOn = DateTime.UtcNow,
+                DepartmentDeptId = Employee.DepartmentDeptId
             };
             return _Employeerepo.Update(employee);
         }

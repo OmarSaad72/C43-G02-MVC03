@@ -5,27 +5,48 @@
 namespace IKEA.DAL.Presistance.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Relation : Migration
+    public partial class UpdatedRelation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "DepartmentDeptId",
+            migrationBuilder.DropForeignKey(
+                name: "FK_Employees_Department_DepartmentDeptId",
+                table: "Employees");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Employees_Department_DeptManageId",
+                table: "Employees");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Employees_DeptManageId",
+                table: "Employees");
+
+            migrationBuilder.DropColumn(
+                name: "DeptManageId",
+                table: "Employees");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Employees_Department_DepartmentDeptId",
                 table: "Employees",
-                type: "int",
-                nullable: true);
+                column: "DepartmentDeptId",
+                principalTable: "Department",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.SetNull);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Employees_Department_DepartmentDeptId",
+                table: "Employees");
 
             migrationBuilder.AddColumn<int>(
                 name: "DeptManageId",
                 table: "Employees",
                 type: "int",
                 nullable: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_DepartmentDeptId",
-                table: "Employees",
-                column: "DepartmentDeptId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_DeptManageId",
@@ -47,34 +68,6 @@ namespace IKEA.DAL.Presistance.Data.Migrations
                 column: "DeptManageId",
                 principalTable: "Department",
                 principalColumn: "Id");
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Employees_Department_DepartmentDeptId",
-                table: "Employees");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Employees_Department_DeptManageId",
-                table: "Employees");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Employees_DepartmentDeptId",
-                table: "Employees");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Employees_DeptManageId",
-                table: "Employees");
-
-            migrationBuilder.DropColumn(
-                name: "DepartmentDeptId",
-                table: "Employees");
-
-            migrationBuilder.DropColumn(
-                name: "DeptManageId",
-                table: "Employees");
         }
     }
 }

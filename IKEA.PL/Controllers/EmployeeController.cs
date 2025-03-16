@@ -1,5 +1,6 @@
 ﻿using IKEA.BLL.Models.Common.Enums;
 using IKEA.BLL.ModelsDTOS.Employees;
+using IKEA.BLL.Services.Department;
 using IKEA.BLL.Services.Employees;
 using IKEA.DAL.Models.Employees;
 using IKEA.DAL.Presistance.Data.Migrations;
@@ -30,6 +31,7 @@ namespace IKEA.PL.Controllers
         [HttpGet] //Show The Form
         public IActionResult Create()
         {
+            //ViewData["Department"] = _departmentService.GetAllDepartments();
             return View();
         }
         [HttpPost]
@@ -41,7 +43,7 @@ namespace IKEA.PL.Controllers
             var message = string.Empty;
             try
             {
-                var result = _EmployeeService.CreateEmployee(new CreatedEmployeeDto
+                var result = _EmployeeService.CreateEmployee(new EditCreateEmployeeDto
                 {
                     EmployeeType = employee.EmployeeType,
                     Gender = employee.Gender,

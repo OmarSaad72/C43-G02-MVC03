@@ -1,4 +1,9 @@
-﻿@model EditCreateEmployeeDto
+﻿@using IKEA.BLL.Services.Department
+@model EditCreateEmployeeDto
+@inject IDepartmentService departmentService 
+@{
+    var Dep = new SelectList(departmentService.GetAllDepartments(), nameof(DepartmentToReturnDTO.Id), nameof(DepartmentToReturnDTO.Name));
+}
 <form method="post" asp-action="@ViewBag.Action" class="col-8">
     @* Defualt Method ==> Post *@
     <div asp-validation-summary="ModelOnly"></div>
@@ -49,10 +54,21 @@
         <span asp-validation-for="Gender" class="text-danger"></span>
     </div>
     <div class="form-group mb-3">
+        <label class="form-label" asp-for="EmployeeType"></label>
         <select asp-for="EmployeeType" asp-items="Html.GetEnumSelectList<EmployeeType>()" class="form-control">
             <option value="">Select Employee Type</option>
         </select>
         <span asp-validation-for="EmployeeType" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-1">
+        <label class="form-label" asp-for="DepartmentDeptId"></label>
+        <select asp-for="EmployeeType" asp-items="@Dep" class="form-control">
+            <option value="@null">Select Department</option>
+        </select>
+    </div>
+    <div class="form-group mb-3">
+        <input asp-for="IsActive" class="form-check-input"/>
+        <label class="form-check-label" asp-for="IsActive"></label>
     </div>
     @if (ViewData["Title"] as string == "Edit")
     {
