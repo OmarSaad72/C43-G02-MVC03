@@ -2,6 +2,7 @@
 using IKEA.BLL.ModelsDTOS.Employees;
 using IKEA.DAL.Models.Employees;
 using IKEA.DAL.Presistance.Repositories.Employees;
+using IKEA.DAL.Presistance.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,17 @@ namespace IKEA.BLL.Services.Employees
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IEmployeesRepo _Employeerepo;
+        private readonly IUnitOfWork _unit;
 
-        public EmployeeService(IEmployeesRepo Employeerepo)
+        //private readonly IEmployeesRepo _Employeerepo;
+
+        //public EmployeeService(IEmployeesRepo Employeerepo)
+        //{
+        //    _Employeerepo = Employeerepo;
+        //}
+        public EmployeeService(IUnitOfWork unit)
         {
-            _Employeerepo = Employeerepo;
+            _unit = unit;
         }
         public int CreateEmployee(EditCreateEmployeeDto Employee)
         {
@@ -38,23 +45,24 @@ namespace IKEA.BLL.Services.Employees
                 LastModifiedOn = DateTime.UtcNow,
                 DepartmentId = Employee.DepartmentId
             };
-            return _Employeerepo.Add(emp);
+            _unit.EmployeesRepo.Add(emp);
+            return _unit.Complete();
         }
 
         public bool DeleteEmployee(int id)
         {
-            var emp = _Employeerepo.GetById(id);
+            var empUOW = _unit.EmployeesRepo;
+            var emp = empUOW.GetById(id);
             if (emp != null)
             {
-                int RowsAffected = _Employeerepo.Delete(emp);
-                return RowsAffected > 0;
+                empUOW.Delete(emp);
             }
-            return false;
+            return _unit.Complete() > 0;
         }
 
         public IEnumerable<EmployeeToReturnDto> GetAllEmployees(string SearchValue)
         {
-            return _Employeerepo.GetAllQuerable().Where(e => !e.IsDeleted &&
+            return _unit.EmployeesRepo.GetAllQuerable().Where(e => !e.IsDeleted &&
             (string.IsNullOrEmpty(SearchValue)
             || e.Name.ToLower().Contains(SearchValue.ToLower())))
                 .Select(Employees => new EmployeeToReturnDto
@@ -68,11 +76,11 @@ namespace IKEA.BLL.Services.Employees
                     Gender = Employees.Gender.ToString(),
                     EmployeeType = Employees.EmployeeType.ToString(),
                     Department = Employees.Department.Name  // Lazy Loading
-                }); 
+                });
         }
         public EmployeesDetailsReturnDto? GetEmployeeById(int Id)
         {
-            var Employees = _Employeerepo.GetById(Id);
+            var Employees = _unit.EmployeesRepo.GetById(Id);
             if (Employees != null)
             {
                 return new EmployeesDetailsReturnDto()
@@ -118,7 +126,8 @@ namespace IKEA.BLL.Services.Employees
                 LastModifiedOn = DateTime.UtcNow,
                 DepartmentId = Employee.DepartmentId
             };
-            return _Employeerepo.Update(employee);
+            _unit.EmployeesRepo.Update(employee);
+            return _unit.Complete();
         }
     }
 }

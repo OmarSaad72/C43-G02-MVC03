@@ -1,6 +1,7 @@
 ﻿using IKEA.BLL.Models.Department;
 using IKEA.DAL.Models.Departments;
 using IKEA.DAL.Presistance.Repositories.Department;
+using IKEA.DAL.Presistance.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,17 @@ namespace IKEA.BLL.Services.Department
 {
     public class DepartmentService : IDepartmentService
     {
-        private readonly IDepartmentRepo _departmentrepo;
+        private readonly IUnitOfWork _unit;
 
-        public DepartmentService(IDepartmentRepo departmentrepo)
+        //private readonly IDepartmentRepo _departmentrepo;
+
+        //public DepartmentService(IDepartmentRepo departmentrepo)
+        //{
+        //    _departmentrepo = departmentrepo;
+        //}
+        public DepartmentService(IUnitOfWork unit)
         {
-            _departmentrepo = departmentrepo;
+            _unit = unit;
         }
         public int CreateDepartment(CreatedDepartmentDto department)
         {
@@ -30,18 +37,19 @@ namespace IKEA.BLL.Services.Department
                 CreatedBy = 1,
                 LastModifiedOn = DateTime.UtcNow,
             };
-            return _departmentrepo.Add(dep);
+            _unit.DepartmentRepo.Add(dep);
+            return _unit.Complete();
         }
 
         public bool DeleteDepartment(int id)
         {
-            var dep = _departmentrepo.GetById(id);
+            var department = _unit.DepartmentRepo;
+            var dep = department.GetById(id);
             if (dep != null)
             {
-                int RowsAffected = _departmentrepo.Delete(dep);
-                return RowsAffected > 0;
+                department.Delete(dep);
             }
-            return false;
+            return _unit.Complete() > 0;
         }
 
         public IEnumerable<DepartmentToReturnDTO> GetAllDepartments()
@@ -58,7 +66,7 @@ namespace IKEA.BLL.Services.Department
             //        Name = item.Name,
             //    };
             //}
-            var department = _departmentrepo.GetAllQuerable().Where(d => !d.IsDeleted).Select(d => new DepartmentToReturnDTO
+            var department = _unit.DepartmentRepo.GetAllQuerable().Where(d => !d.IsDeleted).Select(d => new DepartmentToReturnDTO
             {
                 Id = d.Id,
                 Name = d.Name,
@@ -71,7 +79,7 @@ namespace IKEA.BLL.Services.Department
 
         public DepartmentsDetailsReturnDto? GetDepartmentsById(int Id)
         {
-            var department = _departmentrepo.GetById(Id);
+            var department = _unit.DepartmentRepo.GetById(Id);
             if (department != null)
             {
                 return new DepartmentsDetailsReturnDto()
@@ -104,7 +112,8 @@ namespace IKEA.BLL.Services.Department
                 CreatedBy = 1,
                 LastModifiedOn = DateTime.UtcNow,
             };
-            return _departmentrepo.Update(dep);
+            _unit.DepartmentRepo.Update(dep);
+            return _unit.Complete();
         }
     }
 }

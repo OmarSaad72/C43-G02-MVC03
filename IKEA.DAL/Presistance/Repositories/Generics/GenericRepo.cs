@@ -17,19 +17,17 @@ namespace IKEA.DAL.Presistance.Repositories.Generics
         {
             _DbContext = dbContext;
         }
-        public int Add(T entity)
+        public void Add(T entity)
         {
             _DbContext.Set<T>().Add(entity);
-            return _DbContext.SaveChanges();
         }
 
-        public int Delete(T entity)
+        public void Delete(T entity)
         {
             //_DbContext.Set<T>().Remove(entity);
             //return _DbContext.SaveChanges();
             entity.IsDeleted = true;
             _DbContext.Set<T>().Update(entity);
-            return _DbContext.SaveChanges();
         }
 
         public IEnumerable<T> GetAll(bool WhithNoTracking = true)
@@ -53,10 +51,9 @@ namespace IKEA.DAL.Presistance.Repositories.Generics
             //return dep;
         }
 
-        public int Update(T entity)
+        public void Update(T entity)
         {
             _DbContext.Set<T>().Update(entity);
-            return _DbContext.SaveChanges();
         }
     }
 }
