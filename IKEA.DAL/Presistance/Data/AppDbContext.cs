@@ -23,7 +23,7 @@ namespace IKEA.DAL.Presistance.Data
         //{
         //    optionsBuilder.UseSqlServer("Server=.;DataBase=IKEA;Trusted_Connection=True;TrustServerCertificate=True;");
         //}
-        public DbSet<Departments> Department { get; set; }
+        public DbSet<Department> Department { get; set; }
         public DbSet<Employee> Employees { get; set; }
     }
 }

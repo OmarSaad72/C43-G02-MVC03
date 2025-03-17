@@ -36,7 +36,7 @@ namespace IKEA.BLL.Services.Employees
                 LastModifiedby = 1,
                 CreatedBy = 1,
                 LastModifiedOn = DateTime.UtcNow,
-                DepartmentDeptId = Employee.DepartmentDeptId
+                DepartmentId = Employee.DepartmentId
             };
             return _Employeerepo.Add(emp);
         }
@@ -52,19 +52,23 @@ namespace IKEA.BLL.Services.Employees
             return false;
         }
 
-        public IEnumerable<EmployeeToReturnDto> GetAllEmployees()
+        public IEnumerable<EmployeeToReturnDto> GetAllEmployees(string SearchValue)
         {
-            return _Employeerepo.GetAllQuerable().Include(e => e.Department).Where(e => !e.IsDeleted).Select(Employees => new EmployeeToReturnDto
-            {
-                Id = Employees.Id,
-                Name = Employees.Name,
-                Age = Employees.Age,
-                IsActive = Employees.IsActive,
-                Salary = Employees.Salary,
-                Email = Employees.Email,
-                Gender = Employees.Gender.ToString(),
-                EmployeeType = Employees.EmployeeType.ToString(),
-            }).AsNoTracking().ToList();
+            return _Employeerepo.GetAllQuerable().Where(e => !e.IsDeleted &&
+            (string.IsNullOrEmpty(SearchValue)
+            || e.Name.ToLower().Contains(SearchValue.ToLower())))
+                .Select(Employees => new EmployeeToReturnDto
+                {
+                    Id = Employees.Id,
+                    Name = Employees.Name,
+                    Age = Employees.Age,
+                    IsActive = Employees.IsActive,
+                    Salary = Employees.Salary,
+                    Email = Employees.Email,
+                    Gender = Employees.Gender.ToString(),
+                    EmployeeType = Employees.EmployeeType.ToString(),
+                    Department = Employees.Department.Name  // Lazy Loading
+                }); 
         }
         public EmployeesDetailsReturnDto? GetEmployeeById(int Id)
         {
@@ -112,7 +116,7 @@ namespace IKEA.BLL.Services.Employees
                 LastModifiedby = 1,
                 CreatedBy = 1,
                 LastModifiedOn = DateTime.UtcNow,
-                DepartmentDeptId = Employee.DepartmentDeptId
+                DepartmentId = Employee.DepartmentId
             };
             return _Employeerepo.Update(employee);
         }

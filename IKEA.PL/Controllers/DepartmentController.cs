@@ -1,6 +1,5 @@
 ﻿using IKEA.BLL.Models.Department;
 using IKEA.BLL.Services.Department;
-using IKEA.DAL.Presistance.Data.Migrations;
 using IKEA.PL.View_Models.Department;
 using Microsoft.AspNetCore.Mvc;
 

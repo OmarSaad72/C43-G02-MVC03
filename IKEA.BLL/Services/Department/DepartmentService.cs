@@ -1,6 +1,5 @@
 ﻿using IKEA.BLL.Models.Department;
 using IKEA.DAL.Models.Departments;
-using IKEA.DAL.Presistance.Data.Migrations;
 using IKEA.DAL.Presistance.Repositories.Department;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,7 +20,7 @@ namespace IKEA.BLL.Services.Department
         }
         public int CreateDepartment(CreatedDepartmentDto department)
         {
-            var dep = new Departments()
+            var dep = new DAL.Models.Departments.Department()
             {
                 Code = department.Code,
                 Description = department.Description,
@@ -94,7 +93,7 @@ namespace IKEA.BLL.Services.Department
 
         public int UpdateDepartment(UpdateDepartmentDto departments)
         {
-            var dep = new Departments()
+            var dep = new DAL.Models.Departments.Department()
             {
                 Id = departments.Id,
                 Code = departments.Code,

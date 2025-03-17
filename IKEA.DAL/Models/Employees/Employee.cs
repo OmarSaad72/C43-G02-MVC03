@@ -1,7 +1,6 @@
 ﻿using IKEA.BLL.Models.Common.Enums;
 using IKEA.DAL.Models;
 using IKEA.DAL.Models.Departments;
-using IKEA.DAL.Presistance.Data.Migrations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -27,8 +26,8 @@ namespace IKEA.DAL.Models.Employees
 
         #region Work 
         /******************************Department Relation (Work 1: M{1})******************************/
-        public virtual Departments.Departments? Department { get; set; } //Navigational Property ==> One Side
-        public int? DepartmentDeptId { get; set; }
+        public virtual Department? Department { get; set; } //Navigational Property ==> One Side
+        public int? DepartmentId { get; set; }
         #endregion
     }
 }

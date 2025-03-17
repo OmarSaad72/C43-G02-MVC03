@@ -3,7 +3,6 @@ using IKEA.BLL.ModelsDTOS.Employees;
 using IKEA.BLL.Services.Department;
 using IKEA.BLL.Services.Employees;
 using IKEA.DAL.Models.Employees;
-using IKEA.DAL.Presistance.Data.Migrations;
 using IKEA.PL.View_Models.Employee;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,16 +21,16 @@ namespace IKEA.PL.Controllers
             _Env = webHost;
         }
         [HttpGet] //Default 
-        public IActionResult Index() //Master Action
+        public IActionResult Index(string SearchValue) //Master Action
         {
-            var dep = _EmployeeService.GetAllEmployees();
+            var dep = _EmployeeService.GetAllEmployees(SearchValue);
             return View(dep);
         }
 
         [HttpGet] //Show The Form
         public IActionResult Create()
         {
-            //ViewData["Department"] = _departmentService.GetAllDepartments();
+            //ViewData["Departments"] = _departmentService.GetAllDepartments();
             return View();
         }
         [HttpPost]

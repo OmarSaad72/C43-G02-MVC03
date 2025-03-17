@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IKEA.DAL.Models.Departments
 {
-    public class Departments :ModelBase
+    public class Department : ModelBase
     {
         public string Name { get; set; } = null!; //null-forgiving operator
         public string Code { get; set; } = null!; //null-forgiving operator

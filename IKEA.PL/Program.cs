@@ -16,12 +16,12 @@ namespace IKEA.PL
             #region Configure
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<AppDbContext>((OptionsBuilder =>
+            builder.Services.AddDbContext<AppDbContext>((OptionsBuilder) =>
             {
-                OptionsBuilder.UseLazyLoadingProxies();
                 //OptionsBuilder.UseSqlServer("Server=.;DataBase=IKEA;Trusted_Connection=True;TrustServerCertificate=True;");
-                OptionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            }));
+                OptionsBuilder.UseLazyLoadingProxies()
+                .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             builder.Services.AddScoped<IDepartmentRepo, DepartmentRepo>();  //allow dependancy injection 
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();  //allow dependancy injection 

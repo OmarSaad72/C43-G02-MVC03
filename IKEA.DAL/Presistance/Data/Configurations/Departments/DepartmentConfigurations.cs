@@ -8,18 +8,20 @@ using System.Threading.Tasks;
 
 namespace IKEA.DAL.Presistance.Data.Configurations.Departments
 {
-    internal class DepartmentConfigurations : IEntityTypeConfiguration<Models.Departments.Departments>
+    internal class DepartmentConfigurations : IEntityTypeConfiguration<Models.Departments.Department>
     {
-        public void Configure(EntityTypeBuilder<Models.Departments.Departments> builder)
+        public void Configure(EntityTypeBuilder<Models.Departments.Department> builder)
         {
             builder.Property(x => x.Id).UseIdentityColumn(10, 10);
             builder.Property(x => x.Name).IsRequired().HasColumnType("varchar(50)");
             builder.Property(x => x.Code).IsRequired().HasColumnType("varchar(50)");
             builder.Property(x => x.CreatedOn).HasDefaultValueSql("GETDATE()");
             builder.Property(x => x.LastModifiedOn).HasComputedColumnSql("GETDATE()");
-            builder.HasMany(d => d.Employees).WithOne(e => e.Department)
-                .HasForeignKey(e => e.DepartmentDeptId).OnDelete(DeleteBehavior.SetNull);
-           
+            builder.HasMany(d => d.Employees)
+                   .WithOne(e => e.Department)
+                   .HasForeignKey(e => e.DepartmentId)
+                   .OnDelete(DeleteBehavior.SetNull);
+
         }
     }
 }

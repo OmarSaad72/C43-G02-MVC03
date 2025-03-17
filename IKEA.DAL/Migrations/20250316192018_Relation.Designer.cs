@@ -9,23 +9,26 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace IKEA.DAL.Presistance.Data.Migrations
+namespace IKEA.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250316160331_UpdatedRelation")]
-    partial class UpdatedRelation
+    [Migration("20250316192018_Relation")]
+    partial class Relation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.13")
+                .HasAnnotation("ProductVersion", "8.0.14")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("IKEA.DAL.Models.Departments.Departments", b =>
+            modelBuilder.Entity("IKEA.DAL.Models.Departments.Department", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -93,7 +96,7 @@ namespace IKEA.DAL.Presistance.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<int?>("DepartmentDeptId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -136,22 +139,22 @@ namespace IKEA.DAL.Presistance.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentDeptId");
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("IKEA.DAL.Models.Employees.Employee", b =>
                 {
-                    b.HasOne("IKEA.DAL.Models.Departments.Departments", "Department")
+                    b.HasOne("IKEA.DAL.Models.Departments.Department", "Department")
                         .WithMany("Employees")
-                        .HasForeignKey("DepartmentDeptId")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("IKEA.DAL.Models.Departments.Departments", b =>
+            modelBuilder.Entity("IKEA.DAL.Models.Departments.Department", b =>
                 {
                     b.Navigation("Employees");
                 });

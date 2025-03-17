@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace IKEA.DAL.Presistance.Repositories.Department
 {
-    public class DepartmentRepo : GenericRepo<Departments>, IDepartmentRepo
+    public class DepartmentRepo : GenericRepo<Models.Departments.Department>, IDepartmentRepo
     {
         public DepartmentRepo(AppDbContext dbContext): base(dbContext) 
         {

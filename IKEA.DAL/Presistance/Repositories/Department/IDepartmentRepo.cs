@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IKEA.DAL.Presistance.Repositories.Department
 {
-    public interface IDepartmentRepo : IGenericRepo<Departments>
+    public interface IDepartmentRepo : IGenericRepo<Models.Departments.Department>
     {
        
     }

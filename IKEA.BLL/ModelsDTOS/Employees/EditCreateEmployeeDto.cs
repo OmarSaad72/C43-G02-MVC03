@@ -32,6 +32,6 @@ namespace IKEA.BLL.ModelsDTOS.Employees
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
         [Display(Name ="Department")]
-        public int? DepartmentDeptId { get; set; }
+        public int? DepartmentId { get; set; }
     }
 }
