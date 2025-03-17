@@ -1,4 +1,5 @@
-﻿using IKEA.BLL.Models.Department;
+﻿using AutoMapper;
+using IKEA.BLL.Models.Department;
 using IKEA.BLL.Services.Department;
 using IKEA.PL.View_Models.Department;
 using Microsoft.AspNetCore.Mvc;
@@ -8,12 +9,14 @@ namespace IKEA.PL.Controllers
     public class DepartmentController : Controller
     {
         private readonly IDepartmentService _departmentService;
+        private readonly IMapper _mapper;
         private readonly ILogger<DepartmentController> _logger;
         private readonly IWebHostEnvironment _Env;
 
-        public DepartmentController(IDepartmentService departmentService, ILogger<DepartmentController> logger, IWebHostEnvironment webHost)
+        public DepartmentController(IDepartmentService departmentService, IMapper mapper, ILogger<DepartmentController> logger, IWebHostEnvironment webHost)
         {
             _departmentService = departmentService;
+            _mapper = mapper;
             _logger = logger;
             _Env = webHost;
         }
@@ -40,13 +43,8 @@ namespace IKEA.PL.Controllers
             var message = string.Empty;
             try
             {
-                var result = _departmentService.CreateDepartment(new CreatedDepartmentDto
-                {
-                    Code = dto.Code,
-                    Name = dto.Name,
-                    Description = dto.Description,
-                    CreationDate = dto.CreationDate,
-                });
+                var department = _mapper.Map<DepartmentVM , CreatedDepartmentDto>(dto);
+                var result = _departmentService.CreateDepartment(department);
                 if (result > 0)
                 {
                     TempData["Message"] = "Department Created Successfully";
@@ -95,13 +93,8 @@ namespace IKEA.PL.Controllers
             var department = _departmentService.GetDepartmentsById(id.Value);
             if (department == null)
                 return NotFound();
-            return View(new DepartmentVM()
-            {
-                Code = department.Code,
-                Name = department.Name,
-                Description = department.Description,
-                CreationDate = department.CreationDate
-            });
+            var department2 = _mapper.Map<DepartmentsDetailsReturnDto, DepartmentVM>(department);
+            return View(department2);
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter
@@ -112,14 +105,10 @@ namespace IKEA.PL.Controllers
             var message = string.Empty;
             try
             {
-                var result = _departmentService.UpdateDepartment(new UpdateDepartmentDto()
-                {
-                    Id = id,
-                    Code = edit.Code,
-                    Name = edit.Name,
-                    Description = edit.Description,
-                    CreationDate = edit.CreationDate
-                });
+                var department = _mapper.Map<UpdateDepartmentDto>(edit);
+                department.Id = id;
+                var result = _departmentService.UpdateDepartment(department);
+                
                 if (result > 0)
                 {
                     TempData["Message"] = "Department Updated successfully";
@@ -137,12 +126,12 @@ namespace IKEA.PL.Controllers
             return View(edit);
         }
         [HttpGet]
-        public IActionResult Delete(int? id) 
+        public IActionResult Delete(int? id)
         {
             if (id is null)
                 return BadRequest();
             var DeleteDep = _departmentService.GetDepartmentsById(id.Value);
-            if(DeleteDep is null)
+            if (DeleteDep is null)
                 return NotFound();
             return View(DeleteDep);
         }
@@ -161,7 +150,7 @@ namespace IKEA.PL.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                message =_Env.IsDevelopment() ? ex.Message : "An Error Happend, Can't Deleted";
+                message = _Env.IsDevelopment() ? ex.Message : "An Error Happend, Can't Deleted";
             }
             ModelState.AddModelError(string.Empty, message);
             return View(nameof(Index));
