@@ -1,8 +1,10 @@
-﻿using IKEA.BLL.Models.Common.Enums;
+﻿using AutoMapper;
+using IKEA.BLL.Models.Common.Enums;
 using IKEA.BLL.ModelsDTOS.Employees;
 using IKEA.BLL.Services.Department;
 using IKEA.BLL.Services.Employees;
 using IKEA.DAL.Models.Employees;
+using IKEA.PL.Mapping_Profile;
 using IKEA.PL.View_Models.Employee;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,12 +13,14 @@ namespace IKEA.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService _EmployeeService;
+        private readonly IMapper _mapper;
         private readonly ILogger<EmployeeController> _logger;
         private readonly IWebHostEnvironment _Env;
 
-        public EmployeeController(IEmployeeService EmployeeService, ILogger<EmployeeController> logger, IWebHostEnvironment webHost)
+        public EmployeeController(IEmployeeService EmployeeService, IMapper mapper, ILogger<EmployeeController> logger, IWebHostEnvironment webHost)
         {
             _EmployeeService = EmployeeService;
+            _mapper = mapper;
             _logger = logger;
             _Env = webHost;
         }
@@ -42,21 +46,13 @@ namespace IKEA.PL.Controllers
             var message = string.Empty;
             try
             {
-                var result = _EmployeeService.CreateEmployee(new EditCreateEmployeeDto
+                var emp = _mapper.Map<EditCreateEmployeeDto, EditCreateEmployeeDto>(employee);
+                var result = _EmployeeService.CreateEmployee(emp);
+                if (result > 0) 
                 {
-                    EmployeeType = employee.EmployeeType,
-                    Gender = employee.Gender,
-                    Name = employee.Name,
-                    Address = employee.Address,
-                    Email = employee.Email,
-                    Age = employee.Age,
-                    IsActive = employee.IsActive,
-                    PhoneNumber = employee.PhoneNumber,
-                    HiringDate = employee.HiringDate,
-                    Salary = employee.Salary,
-                });
-                if (result > 0)
+                    TempData["Message"] = "Employee Created Successfully";
                     return RedirectToAction(nameof(Index));
+                }
                 else
                 {
                     message = "Employee Can't Be Created!";
@@ -100,20 +96,8 @@ namespace IKEA.PL.Controllers
             var employee = _EmployeeService.GetEmployeeById(id.Value);
             if (employee == null)
                 return NotFound();
-            return View(new EditCreateEmployeeDto()
-            {
-                EmployeeType = Enum.TryParse<EmployeeType>(employee.EmployeeType, true, out var employeetype) ? employeetype : default,
-                Gender = Enum.TryParse<Gender>(employee.Gender, true, out var gender) ? gender : default,
-                Name = employee.Name,
-                Address = employee.Address,
-                Email = employee.Email,
-                Age = employee.Age,
-                IsActive = employee.IsActive,
-                PhoneNumber = employee.PhoneNumber,
-                HiringDate = employee.HiringDate,
-                Id = id.Value,
-                Salary = employee.Salary,
-            });
+            var emp = _mapper.Map<EmployeesDetailsReturnDto, EditCreateEmployeeDto>(employee);
+            return View(emp);
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter
@@ -124,9 +108,14 @@ namespace IKEA.PL.Controllers
             var message = string.Empty;
             try
             {
+                var emp = _mapper.Map<EditCreateEmployeeDto, EmployeeEditVM>(edit);
                 var result = _EmployeeService.UpdateEmployee(edit);
                 if (result > 0)
+                {
+                    TempData["Message"] = "Employee Updated Successfully";
+
                     return RedirectToAction(nameof(Index));
+                }
                 else
                 {
                     message = "Employee Can't Be Updated!";
@@ -157,8 +146,11 @@ namespace IKEA.PL.Controllers
             try
             {
                 if (DeleteDep)
+                {
+                    TempData["Message"] = "Employee Deleted Successfully";
                     return RedirectToAction(nameof(Index));
-                message = "An Error Happend, Can't Deleted";
+                }
+                    message = "An Error Happened, Can't Deleted";
             }
             catch (Exception ex)
             {

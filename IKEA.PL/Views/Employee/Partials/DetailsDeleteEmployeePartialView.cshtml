@@ -67,21 +67,21 @@
             <input asp-for="LastModifiedOn" class="form-control" readonly />
         </div>
     </div>
-    @if( ViewData["Title"] as string == "Details")
+    @if (ViewData["Title"] as string == "Details")
     {
-    <div class="mt-4">
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success">Edit</a> |
-        <a asp-action="Index" class="btn btn-secondary">Back To list</a>
-    </div>
+        <div class="mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success">Edit</a> |
+            <a asp-action="Index" class="btn btn-secondary">Back To list</a>
+        </div>
     }
     else
     {
-    <div class="mt-2">
-        <form method="post" asp-action="Delete" asp-route-id="@Model.Id">
-            <input type="submit" class="btn btn-danger" value="Delete" />
-            <a asp-action="Index" class="btn btn-dark">Back To list</a>
-        </form>
-    </div>
+        <div class="mt-2">
+            <form method="post" asp-action="Delete" asp-route-id="@Model.Id">
+                <input type="submit" class="btn btn-danger" value="Delete" />
+                <a asp-action="Index" class="btn btn-dark">Back To list</a>
+            </form>
+        </div>
     }
 </div>
 

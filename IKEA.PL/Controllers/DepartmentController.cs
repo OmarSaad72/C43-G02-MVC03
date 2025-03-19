@@ -144,7 +144,10 @@ namespace IKEA.PL.Controllers
             try
             {
                 if (DeleteDep)
+                {
+                    @TempData["Message"] = "Department Deleted Successfully";
                     return RedirectToAction(nameof(Index));
+                }
                 message = "An Error Happend, Can't Deleted";
             }
             catch (Exception ex)
