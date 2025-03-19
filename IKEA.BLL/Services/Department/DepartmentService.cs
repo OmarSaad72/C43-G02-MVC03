@@ -25,7 +25,7 @@ namespace IKEA.BLL.Services.Department
         {
             _unit = unit;
         }
-        public int CreateDepartment(CreatedDepartmentDto department)
+        public async Task<int> CreateDepartmentAsync(CreatedDepartmentDto department)
         {
             var dep = new DAL.Models.Departments.Department()
             {
@@ -38,48 +38,36 @@ namespace IKEA.BLL.Services.Department
                 LastModifiedOn = DateTime.UtcNow,
             };
             _unit.DepartmentRepo.Add(dep);
-            return _unit.Complete();
+            return await _unit.CompleteAsync();
         }
 
-        public bool DeleteDepartment(int id)
+        public async Task<bool> DeleteDepartmentAsync(int id)
         {
             var department = _unit.DepartmentRepo;
-            var dep = department.GetById(id);
+            var dep = await department.GetByIdAsync(id);
             if (dep != null)
             {
                 department.Delete(dep);
             }
-            return _unit.Complete() > 0;
+            return await _unit.CompleteAsync() > 0;
         }
 
-        public IEnumerable<DepartmentToReturnDTO> GetAllDepartments()
+        public async Task<IEnumerable<DepartmentToReturnDTO>> GetAllDepartmentsAsync()
         {
-            //var department = _departmentrepo.GetAll(); // IEnumerable<Department> ==> IEnumerable<DepartmentToReturnDTO>
-            ////Mapping: Department ===> DepartmentToReturnDto
-            //foreach (var item in department)
-            //{
-            //    yield return new DepartmentToReturnDTO()
-            //    {
-            //        Description = item.Description,
-            //        CreationDate = item.CreationDate,
-            //        Id = item.Id,
-            //        Name = item.Name,
-            //    };
-            //}
-            var department = _unit.DepartmentRepo.GetAllQuerable().Where(d => !d.IsDeleted).Select(d => new DepartmentToReturnDTO
+            var department = await _unit.DepartmentRepo.GetAllQuerable().Where(d => !d.IsDeleted).Select(d => new DepartmentToReturnDTO
             {
                 Id = d.Id,
                 Name = d.Name,
                 Code = d.Code,
                 //Description = d.Description,
                 CreationDate = d.CreationDate
-            }).AsNoTracking().ToList();
+            }).AsNoTracking().ToListAsync();
             return department;
         }
 
-        public DepartmentsDetailsReturnDto? GetDepartmentsById(int Id)
+        public async Task<DepartmentsDetailsReturnDto?> GetDepartmentsByIdAsync(int Id)
         {
-            var department = _unit.DepartmentRepo.GetById(Id);
+            var department = await _unit.DepartmentRepo.GetByIdAsync(Id);
             if (department != null)
             {
                 return new DepartmentsDetailsReturnDto()
@@ -99,7 +87,7 @@ namespace IKEA.BLL.Services.Department
             return null;
         }
 
-        public int UpdateDepartment(UpdateDepartmentDto departments)
+        public async Task<int> UpdateDepartmentAsync(UpdateDepartmentDto departments)
         {
             var dep = new DAL.Models.Departments.Department()
             {
@@ -113,7 +101,7 @@ namespace IKEA.BLL.Services.Department
                 LastModifiedOn = DateTime.UtcNow,
             };
             _unit.DepartmentRepo.Update(dep);
-            return _unit.Complete();
+            return await _unit.CompleteAsync();
         }
     }
 }

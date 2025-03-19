@@ -21,11 +21,11 @@ namespace IKEA.PL.Controllers
             _Env = webHost;
         }
         [HttpGet] //Default 
-        public IActionResult Index() //Master Action
+        public async Task<IActionResult> Index() //Master Action
         {
             ViewData["Message"] = "View Data";
             ViewBag.Message = "View Bag";
-            var dep = _departmentService.GetAllDepartments();
+            var dep = await _departmentService.GetAllDepartmentsAsync();
             return View(dep);
         }
 
@@ -36,15 +36,15 @@ namespace IKEA.PL.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter
-        public IActionResult Create(DepartmentVM dto)
+        public async Task<IActionResult> Create(DepartmentVM dto)
         {
             if (!ModelState.IsValid)
                 return View(dto);
             var message = string.Empty;
             try
             {
-                var department = _mapper.Map<DepartmentVM , CreatedDepartmentDto>(dto);
-                var result = _departmentService.CreateDepartment(department);
+                var department = _mapper.Map<DepartmentVM, CreatedDepartmentDto>(dto);
+                var result = await _departmentService.CreateDepartmentAsync(department);
                 if (result > 0)
                 {
                     TempData["Message"] = "Department Created Successfully";
@@ -74,11 +74,11 @@ namespace IKEA.PL.Controllers
             }
         }
         [HttpGet]
-        public IActionResult Details(int? Id)
+        public async Task<IActionResult> Details(int? Id)
         {
             if (Id == null)
                 return BadRequest();  // 400
-            var department = _departmentService.GetDepartmentsById(Id.Value);
+            var department = await _departmentService.GetDepartmentsByIdAsync(Id.Value);
             if (department == null)
             {
                 return NotFound();  // 404
@@ -86,11 +86,11 @@ namespace IKEA.PL.Controllers
             return View(department);
         }
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
                 return BadRequest();
-            var department = _departmentService.GetDepartmentsById(id.Value);
+            var department = await _departmentService.GetDepartmentsByIdAsync(id.Value);
             if (department == null)
                 return NotFound();
             var department2 = _mapper.Map<DepartmentsDetailsReturnDto, DepartmentVM>(department);
@@ -98,7 +98,7 @@ namespace IKEA.PL.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter
-        public IActionResult Edit(int id, DepartmentVM edit)
+        public async Task<IActionResult> Edit(int id, DepartmentVM edit)
         {
             if (!ModelState.IsValid)
                 return View(edit);
@@ -107,8 +107,8 @@ namespace IKEA.PL.Controllers
             {
                 var department = _mapper.Map<UpdateDepartmentDto>(edit);
                 department.Id = id;
-                var result = _departmentService.UpdateDepartment(department);
-                
+                var result = await _departmentService.UpdateDepartmentAsync(department);
+
                 if (result > 0)
                 {
                     TempData["Message"] = "Department Updated successfully";
@@ -126,20 +126,20 @@ namespace IKEA.PL.Controllers
             return View(edit);
         }
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id is null)
                 return BadRequest();
-            var DeleteDep = _departmentService.GetDepartmentsById(id.Value);
+            var DeleteDep = await _departmentService.GetDepartmentsByIdAsync(id.Value);
             if (DeleteDep is null)
                 return NotFound();
             return View(DeleteDep);
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var DeleteDep = _departmentService.DeleteDepartment(id);
+            var DeleteDep = await _departmentService.DeleteDepartmentAsync(id);
             var message = string.Empty;
             try
             {

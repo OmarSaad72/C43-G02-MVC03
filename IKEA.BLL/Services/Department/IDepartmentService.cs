@@ -10,10 +10,10 @@ namespace IKEA.BLL.Services.Department
 {
     public interface IDepartmentService
     {
-        IEnumerable<DepartmentToReturnDTO> GetAllDepartments();
-        DepartmentsDetailsReturnDto? GetDepartmentsById(int Id);
-        int CreateDepartment(CreatedDepartmentDto department);
-        int UpdateDepartment(UpdateDepartmentDto departments);
-        bool DeleteDepartment(int id);
+        Task<IEnumerable<DepartmentToReturnDTO>> GetAllDepartmentsAsync();
+        Task<DepartmentsDetailsReturnDto?> GetDepartmentsByIdAsync(int Id);
+        Task<int> CreateDepartmentAsync(CreatedDepartmentDto department);
+        Task<int> UpdateDepartmentAsync(UpdateDepartmentDto departments);
+        Task<bool> DeleteDepartmentAsync(int id);
     }
 }

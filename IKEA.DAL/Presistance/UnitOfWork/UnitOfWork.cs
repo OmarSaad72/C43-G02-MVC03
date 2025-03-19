@@ -22,13 +22,13 @@ namespace IKEA.DAL.Presistance.UnitOfWork
         public IEmployeesRepo EmployeesRepo => new EmployeesRepo(_appDbContext); // create instance
         public IDepartmentRepo DepartmentRepo => new DepartmentRepo(_appDbContext); // create instance
 
-        public int Complete()
+        public async Task<int> CompleteAsync()
         {
-           return _appDbContext.SaveChanges();
+            return await _appDbContext.SaveChangesAsync();
         }
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
-            _appDbContext.Dispose();
+            await _appDbContext.DisposeAsync();
         }
     }
 }

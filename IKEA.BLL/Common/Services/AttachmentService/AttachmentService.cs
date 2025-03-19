@@ -11,7 +11,7 @@ namespace IKEA.BLL.Common.Services.AttachmentService
     {
         public readonly List<string> allowedExtension = new() { ".png", ".jpeg", "jgp" };
         public const int MaxSize = 2_097_152; // 2mb
-        public string? Upload(IFormFile file, string folderName)
+        public  async Task<string?> UploadAsync(IFormFile file, string folderName)
         {
             // 1- Validate for Extension
             var extension = Path.GetExtension(file.FileName); //.png
@@ -30,7 +30,7 @@ namespace IKEA.BLL.Common.Services.AttachmentService
             // 6- Save File as Stream[Data Per Time]
             using var fileStream = new FileStream(filePath, FileMode.Create);
             //7- Copy File to FileStream
-            file.CopyTo(fileStream);
+            await file.CopyToAsync(fileStream);
             // 8- Return FileName
             return fileName;
         }

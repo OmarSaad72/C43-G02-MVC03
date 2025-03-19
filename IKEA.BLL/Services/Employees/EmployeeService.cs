@@ -29,7 +29,7 @@ namespace IKEA.BLL.Services.Employees
             _unit = unit;
             _attachmentService = attachmentService;
         }
-        public int CreateEmployee(EditCreateEmployeeDto Employee)
+        public async Task<int> CreateEmployeeAsync(EditCreateEmployeeDto Employee)
         {
             var emp = new Employee()
             {
@@ -50,26 +50,26 @@ namespace IKEA.BLL.Services.Employees
             };
             if (Employee.Image != null)
             {
-                emp.Image = _attachmentService.Upload(Employee.Image, "Images");
+                emp.Image = await _attachmentService.UploadAsync(Employee.Image, "Images");
             }
             _unit.EmployeesRepo.Add(emp);
-            return _unit.Complete();
+            return await _unit.CompleteAsync();
         }
 
-        public bool DeleteEmployee(int id)
+        public async Task<bool> DeleteEmployeeAsync(int id)
         {
             var empUOW = _unit.EmployeesRepo;
-            var emp = empUOW.GetById(id);
+            var emp = await empUOW.GetByIdAsync(id);
             if (emp != null)
             {
                 empUOW.Delete(emp);
             }
-            return _unit.Complete() > 0;
+            return await _unit.CompleteAsync() > 0;
         }
 
-        public IEnumerable<EmployeeToReturnDto> GetAllEmployees(string SearchValue)
+        public async Task<IEnumerable<EmployeeToReturnDto>> GetAllEmployeesAsync(string SearchValue)
         {
-            return _unit.EmployeesRepo.GetAllQuerable().Where(e => !e.IsDeleted &&
+            return await _unit.EmployeesRepo.GetAllQuerable().Where(e => !e.IsDeleted &&
             (string.IsNullOrEmpty(SearchValue)
             || e.Name.ToLower().Contains(SearchValue.ToLower())))
                 .Select(Employees => new EmployeeToReturnDto
@@ -84,11 +84,11 @@ namespace IKEA.BLL.Services.Employees
                     EmployeeType = Employees.EmployeeType.ToString(),
                     Department = Employees.Department.Name,  // Lazy Loading
                     Image = Employees.Image
-                });
+                }).ToListAsync();
         }
-        public EmployeesDetailsReturnDto? GetEmployeeById(int Id)
+        public async Task<EmployeesDetailsReturnDto?> GetEmployeeByIdAsync(int Id)
         {
-            var Employees = _unit.EmployeesRepo.GetById(Id);
+            var Employees = await _unit.EmployeesRepo.GetByIdAsync(Id);
             if (Employees != null)
             {
                 return new EmployeesDetailsReturnDto()
@@ -115,7 +115,7 @@ namespace IKEA.BLL.Services.Employees
             return null;
         }
 
-        public int UpdateEmployee(EditCreateEmployeeDto Employee)
+        public async Task<int> UpdateEmployeeAsync(EditCreateEmployeeDto Employee)
         {
             var employee = new Employee()
             {
@@ -137,10 +137,10 @@ namespace IKEA.BLL.Services.Employees
             };
             if (Employee.Image != null)
             {
-                employee.Image = _attachmentService.Upload(Employee.Image, "Images");
+                employee.Image = await _attachmentService.UploadAsync(Employee.Image, "Images");
             }
             _unit.EmployeesRepo.Update(employee);
-            return _unit.Complete();
+            return await _unit.CompleteAsync();
         }
     }
 }

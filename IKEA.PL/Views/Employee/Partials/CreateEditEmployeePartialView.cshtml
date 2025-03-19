@@ -1,7 +1,7 @@
 ﻿@model EditCreateEmployeeDto
 @inject IDepartmentService _departmentService 
 @{
-    var Departments = new SelectList(_departmentService.GetAllDepartments(), nameof(DepartmentToReturnDTO.Id), nameof(DepartmentToReturnDTO.Name));
+    var Departments = new SelectList(await _departmentService.GetAllDepartmentsAsync(), nameof(DepartmentToReturnDTO.Id), nameof(DepartmentToReturnDTO.Name));
 }
 <form method="post" asp-action="@ViewBag.Action" class="col-8" enctype="multipart/form-data">   @* Defualt Method ==> Post *@
     <div asp-validation-summary="ModelOnly"></div>

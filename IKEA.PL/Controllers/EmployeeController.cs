@@ -28,9 +28,9 @@ namespace IKEA.PL.Controllers
             _Env = webHost;
         }
         [HttpGet] //Default 
-        public IActionResult Index(string SearchValue) //Master Action
+        public async Task<IActionResult> Index(string SearchValue) //Master Action
         {
-            var dep = _EmployeeService.GetAllEmployees(SearchValue);
+            var dep = await _EmployeeService.GetAllEmployeesAsync(SearchValue);
             return View(dep);
         }
 
@@ -42,7 +42,7 @@ namespace IKEA.PL.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter
-        public IActionResult Create(EditCreateEmployeeDto employee)
+        public async Task<IActionResult> Create(EditCreateEmployeeDto employee)
         {
             if (!ModelState.IsValid)
                 return View(employee);
@@ -50,7 +50,7 @@ namespace IKEA.PL.Controllers
             try
             {
                 var emp = _mapper.Map<EditCreateEmployeeDto, EditCreateEmployeeDto>(employee);
-                var result = _EmployeeService.CreateEmployee(emp);
+                var result = await _EmployeeService.CreateEmployeeAsync(emp);
                 if (result > 0)
                 {
                     TempData["Message"] = "Employee Created Successfully";
@@ -80,11 +80,11 @@ namespace IKEA.PL.Controllers
             }
         }
         [HttpGet]
-        public IActionResult Details(int? Id)
+        public async Task<IActionResult> Details(int? Id)
         {
             if (Id == null)
                 return BadRequest();  // 400
-            var Employee = _EmployeeService.GetEmployeeById(Id.Value);
+            var Employee = await _EmployeeService.GetEmployeeByIdAsync(Id.Value);
             if (Employee == null)
             {
                 return NotFound();  // 404
@@ -92,11 +92,11 @@ namespace IKEA.PL.Controllers
             return View(Employee);
         }
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
                 return BadRequest();
-            var employee = _EmployeeService.GetEmployeeById(id.Value);
+            var employee = await _EmployeeService.GetEmployeeByIdAsync(id.Value);
             if (employee == null)
                 return NotFound();
             var emp = _mapper.Map<EmployeesDetailsReturnDto, EditCreateEmployeeDto>(employee);
@@ -109,7 +109,7 @@ namespace IKEA.PL.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter
-        public IActionResult Edit(int id, EditCreateEmployeeDto edit)
+        public async Task<IActionResult> Edit(int id, EditCreateEmployeeDto edit)
         {
             if (!ModelState.IsValid)
                 return View(edit);
@@ -117,7 +117,7 @@ namespace IKEA.PL.Controllers
             try
             {
                 var emp = _mapper.Map<EditCreateEmployeeDto, EmployeeEditVM>(edit);
-                var result = _EmployeeService.UpdateEmployee(edit);
+                var result = await _EmployeeService.UpdateEmployeeAsync(edit);
                 if (result > 0)
                 {
                     TempData["Message"] = "Employee Updated Successfully";
@@ -136,20 +136,20 @@ namespace IKEA.PL.Controllers
             return View(edit);
         }
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id is null)
                 return BadRequest();
-            var DeleteDep = _EmployeeService.GetEmployeeById(id.Value);
+            var DeleteDep = await _EmployeeService.GetEmployeeByIdAsync(id.Value);
             if (DeleteDep is null)
                 return NotFound();
             return View(DeleteDep);
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var DeleteDep = _EmployeeService.DeleteEmployee(id);
+            var DeleteDep = await _EmployeeService.DeleteEmployeeAsync(id);
             var message = string.Empty;
             try
             {

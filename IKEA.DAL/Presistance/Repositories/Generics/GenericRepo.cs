@@ -30,13 +30,13 @@ namespace IKEA.DAL.Presistance.Repositories.Generics
             _DbContext.Set<T>().Update(entity);
         }
 
-        public IEnumerable<T> GetAll(bool WhithNoTracking = true)
+        public async Task<IEnumerable<T>> GetAllAsync(bool WhithNoTracking = true)
         {
             if (WhithNoTracking)
             {
-                return _DbContext.Set<T>().Where(Z => !Z.IsDeleted).AsNoTracking().ToList();
+                return await _DbContext.Set<T>().Where(Z => !Z.IsDeleted).AsNoTracking().ToListAsync();
             }
-            return _DbContext.Set<T>().Where(Z => !Z.IsDeleted).ToList();
+            return await _DbContext.Set<T>().Where(Z => !Z.IsDeleted).ToListAsync();
         }
 
         public IQueryable<T> GetAllQuerable()
@@ -44,9 +44,9 @@ namespace IKEA.DAL.Presistance.Repositories.Generics
             return _DbContext.Set<T>();
         }
 
-        public T? GetById(int id)
+        public async Task<T?> GetByIdAsync(int id)
         {
-            return _DbContext.Set<T>().Find(id);
+            return await _DbContext.Set<T>().FindAsync(id);
             //var dep = _DbContext.Department.FirstOrDefault(d => d.Id == id);
             //return dep;
         }
