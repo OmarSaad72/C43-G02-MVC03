@@ -1,4 +1,5 @@
 using AutoMapper;
+using IKEA.BLL.Common.Services.AttachmentService;
 using IKEA.BLL.Services.Department;
 using IKEA.BLL.Services.Employees;
 using IKEA.DAL.Presistance.Data;
@@ -31,7 +32,8 @@ namespace IKEA.PL
             //builder.Services.AddScoped<IEmployeesRepo, EmployeesRepo>();  //allow dependancy injection 
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();  //allow dependancy injection 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();  //allow dependancy injection 
-            builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfiles()));  
+            builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfiles()));  // LifeTime: Transient
+            builder.Services.AddTransient<IAttachmentService, AttachmentService>();
             #endregion
 
             var app = builder.Build();

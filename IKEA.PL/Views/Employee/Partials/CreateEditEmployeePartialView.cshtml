@@ -3,7 +3,7 @@
 @{
     var Departments = new SelectList(_departmentService.GetAllDepartments(), nameof(DepartmentToReturnDTO.Id), nameof(DepartmentToReturnDTO.Name));
 }
-<form method="post" asp-action="@ViewBag.Action" class="col-8">   @* Defualt Method ==> Post *@
+<form method="post" asp-action="@ViewBag.Action" class="col-8" enctype="multipart/form-data">   @* Defualt Method ==> Post *@
     <div asp-validation-summary="ModelOnly"></div>
     <div class="form-group mb-3">
         <label class="form-label" asp-for="Name">Name</label>
@@ -63,6 +63,10 @@
         <select asp-for="DepartmentId" asp-items="@Departments" class="form-control">
             <option value="@null">Select Department</option>
         </select>
+    </div>
+    <div class="form-group mb-1">
+        <label class="form-label" asp-for="Image"></label>
+        <input asp-for="Image" type="file" class="form-control" />
     </div>
     <div class="form-group mb-3">
         <input asp-for="IsActive" class="form-check-input"/>

@@ -1,4 +1,5 @@
 ﻿using IKEA.BLL.Models.Common.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,5 +26,6 @@ namespace IKEA.BLL.ModelsDTOS.Employees
         public int LastModifiedby { get; set; }
         public DateTime LastModifiedOn { get; set; }
         public string? Department { get; set; }
+        public string? Image { get; set; }
     }
 }

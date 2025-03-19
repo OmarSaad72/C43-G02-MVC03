@@ -1,4 +1,5 @@
-﻿using IKEA.BLL.Models.Common.Enums;
+﻿using IKEA.BLL.Common.Services.AttachmentService;
+using IKEA.BLL.Models.Common.Enums;
 using IKEA.BLL.ModelsDTOS.Employees;
 using IKEA.DAL.Models.Employees;
 using IKEA.DAL.Presistance.Repositories.Employees;
@@ -15,6 +16,7 @@ namespace IKEA.BLL.Services.Employees
     public class EmployeeService : IEmployeeService
     {
         private readonly IUnitOfWork _unit;
+        private readonly IAttachmentService _attachmentService;
 
         //private readonly IEmployeesRepo _Employeerepo;
 
@@ -22,9 +24,10 @@ namespace IKEA.BLL.Services.Employees
         //{
         //    _Employeerepo = Employeerepo;
         //}
-        public EmployeeService(IUnitOfWork unit)
+        public EmployeeService(IUnitOfWork unit, IAttachmentService attachmentService)
         {
             _unit = unit;
+            _attachmentService = attachmentService;
         }
         public int CreateEmployee(EditCreateEmployeeDto Employee)
         {
@@ -43,8 +46,12 @@ namespace IKEA.BLL.Services.Employees
                 LastModifiedby = 1,
                 CreatedBy = 1,
                 LastModifiedOn = DateTime.UtcNow,
-                DepartmentId = Employee.DepartmentId
+                DepartmentId = Employee.DepartmentId,
             };
+            if (Employee.Image != null)
+            {
+                emp.Image = _attachmentService.Upload(Employee.Image, "Images");
+            }
             _unit.EmployeesRepo.Add(emp);
             return _unit.Complete();
         }
@@ -126,6 +133,10 @@ namespace IKEA.BLL.Services.Employees
                 LastModifiedOn = DateTime.UtcNow,
                 DepartmentId = Employee.DepartmentId
             };
+            if (Employee.Image != null)
+            {
+                employee.Image = _attachmentService.Upload(Employee.Image, "Images");
+            }
             _unit.EmployeesRepo.Update(employee);
             return _unit.Complete();
         }
