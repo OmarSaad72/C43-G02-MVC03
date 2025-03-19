@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IKEA.BLL.Common.Services.AttachmentService;
 using IKEA.BLL.Models.Common.Enums;
 using IKEA.BLL.ModelsDTOS.Employees;
 using IKEA.BLL.Services.Department;
@@ -13,13 +14,15 @@ namespace IKEA.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService _EmployeeService;
+        private readonly IAttachmentService _attachmentService;
         private readonly IMapper _mapper;
         private readonly ILogger<EmployeeController> _logger;
         private readonly IWebHostEnvironment _Env;
 
-        public EmployeeController(IEmployeeService EmployeeService, IMapper mapper, ILogger<EmployeeController> logger, IWebHostEnvironment webHost)
+        public EmployeeController(IEmployeeService EmployeeService, IAttachmentService attachmentService, IMapper mapper, ILogger<EmployeeController> logger, IWebHostEnvironment webHost)
         {
             _EmployeeService = EmployeeService;
+            _attachmentService = attachmentService;
             _mapper = mapper;
             _logger = logger;
             _Env = webHost;
@@ -48,7 +51,7 @@ namespace IKEA.PL.Controllers
             {
                 var emp = _mapper.Map<EditCreateEmployeeDto, EditCreateEmployeeDto>(employee);
                 var result = _EmployeeService.CreateEmployee(emp);
-                if (result > 0) 
+                if (result > 0)
                 {
                     TempData["Message"] = "Employee Created Successfully";
                     return RedirectToAction(nameof(Index));
@@ -97,6 +100,11 @@ namespace IKEA.PL.Controllers
             if (employee == null)
                 return NotFound();
             var emp = _mapper.Map<EmployeesDetailsReturnDto, EditCreateEmployeeDto>(employee);
+            //if (emp.Image != null)
+            //{
+            //    IFormFile emp1 = _mapper.Map<IFormFile>(emp);
+            //    employee.Image = _attachmentService.Upload(emp.Image, "Images");
+            //}
             return View(emp);
         }
         [HttpPost]
@@ -150,7 +158,7 @@ namespace IKEA.PL.Controllers
                     TempData["Message"] = "Employee Deleted Successfully";
                     return RedirectToAction(nameof(Index));
                 }
-                    message = "An Error Happened, Can't Deleted";
+                message = "An Error Happened, Can't Deleted";
             }
             catch (Exception ex)
             {

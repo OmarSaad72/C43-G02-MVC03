@@ -82,7 +82,8 @@ namespace IKEA.BLL.Services.Employees
                     Email = Employees.Email,
                     Gender = Employees.Gender.ToString(),
                     EmployeeType = Employees.EmployeeType.ToString(),
-                    Department = Employees.Department.Name  // Lazy Loading
+                    Department = Employees.Department.Name,  // Lazy Loading
+                    Image = Employees.Image
                 });
         }
         public EmployeesDetailsReturnDto? GetEmployeeById(int Id)
@@ -107,7 +108,8 @@ namespace IKEA.BLL.Services.Employees
                     CreatedOn = Employees.CreatedOn,
                     LastModifiedby = Employees.LastModifiedby,
                     LastModifiedOn = Employees.LastModifiedOn,
-                    Department = Employees?.Department?.Name  // Lazy Loading
+                    Department = Employees?.Department?.Name,  // Lazy Loading
+                    Image = Employees.Image
                 };
             }
             return null;

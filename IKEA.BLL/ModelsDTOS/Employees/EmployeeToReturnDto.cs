@@ -23,6 +23,5 @@ namespace IKEA.BLL.ModelsDTOS.Employees
         public string EmployeeType { get; set; } = null!;
         public string? Department { get; set; }
         public string? Image { get; set; }
-
     }
 }

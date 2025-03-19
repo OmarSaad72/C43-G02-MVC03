@@ -14,6 +14,7 @@ namespace IKEA.PL.Mapping_Profile
             CreateMap<EditCreateEmployeeDto, EditCreateEmployeeDto>();
             CreateMap<EmployeesDetailsReturnDto, EditCreateEmployeeDto>();
             CreateMap<EditCreateEmployeeDto, EmployeeEditVM>();
+            //CreateMap<EditCreateEmployeeDto, IFormFile>().ReverseMap();
             #endregion
 
             #region Department
