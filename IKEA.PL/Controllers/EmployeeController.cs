@@ -100,11 +100,11 @@ namespace IKEA.PL.Controllers
             if (employee == null)
                 return NotFound();
             var emp = _mapper.Map<EmployeesDetailsReturnDto, EditCreateEmployeeDto>(employee);
-            //if (emp.Image != null)
-            //{
-            //    IFormFile emp1 = _mapper.Map<IFormFile>(emp);
-            //    employee.Image = _attachmentService.Upload(emp.Image, "Images");
-            //}
+            if (employee.Image is not null)
+            {
+                IFormFile emp1 = _mapper.Map<IFormFile>(emp);
+                employee.Image = await _attachmentService.UploadAsync(emp?.Image, "Images");
+            }
             return View(emp);
         }
         [HttpPost]
