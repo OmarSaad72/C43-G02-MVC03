@@ -2,11 +2,13 @@ using AutoMapper;
 using IKEA.BLL.Common.Services.AttachmentService;
 using IKEA.BLL.Services.Department;
 using IKEA.BLL.Services.Employees;
+using IKEA.DAL.Models.Identity;
 using IKEA.DAL.Presistance.Data;
 using IKEA.DAL.Presistance.Repositories.Department;
 using IKEA.DAL.Presistance.Repositories.Employees;
 using IKEA.DAL.Presistance.UnitOfWork;
 using IKEA.PL.Mapping_Profile;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IKEA.PL
@@ -34,6 +36,19 @@ namespace IKEA.PL
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();  //allow dependancy injection 
             builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfiles()));  // LifeTime: Transient
             builder.Services.AddTransient<IAttachmentService, AttachmentService>();
+            //builder.Services.AddScoped<UserManager<AppUser>>();
+            //builder.Services.AddScoped<RoleManager<IdentityRole>>();
+            //builder.Services.AddScoped<SignInManager<AppUser>>();
+            builder.Services.AddIdentity<AppUser, IdentityRole>((options) =>
+            {
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequiredLength = 5;
+            })
+                .AddEntityFrameworkStores<AppDbContext>();
+            builder.Services.AddAuthentication();
             #endregion
 
             var app = builder.Build();
@@ -55,7 +70,7 @@ namespace IKEA.PL
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Register}/{id?}");
 
             app.Run();
         }

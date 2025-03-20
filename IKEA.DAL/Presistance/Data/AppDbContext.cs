@@ -1,5 +1,6 @@
 ﻿using IKEA.DAL.Models.Departments;
 using IKEA.DAL.Models.Employees;
+using IKEA.DAL.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace IKEA.DAL.Presistance.Data
 {
-    public class AppDbContext: IdentityDbContext 
+    public class AppDbContext: IdentityDbContext<AppUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options ):base(options)
         {
