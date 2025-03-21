@@ -2,6 +2,7 @@
 using IKEA.PL.View_Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Configuration;
 
 namespace IKEA.PL.Controllers
 {
@@ -75,6 +76,12 @@ namespace IKEA.PL.Controllers
                     ModelState.AddModelError(string.Empty, "Email Is Not Found");
             }
             return View(logIn);
+        }
+        [HttpGet]
+        public new/*Masking*/ async Task<IActionResult> SignOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("LogIn");
         }
     }
 }
