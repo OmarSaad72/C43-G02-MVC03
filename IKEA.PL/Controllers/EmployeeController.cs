@@ -7,10 +7,13 @@ using IKEA.BLL.Services.Employees;
 using IKEA.DAL.Models.Employees;
 using IKEA.PL.Mapping_Profile;
 using IKEA.PL.View_Models.Employee;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IKEA.PL.Controllers
 {
+    //[AllowAnonymous] // default if not exist authorize
+    [Authorize] // Any One Authenticated Is Authorize
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService _EmployeeService;
@@ -100,12 +103,10 @@ namespace IKEA.PL.Controllers
             if (employee == null)
                 return NotFound();
             var emp = _mapper.Map<EmployeesDetailsReturnDto, EditCreateEmployeeDto>(employee);
-            if (employee.Image is not null)
-            {
-                IFormFile emp1 = _mapper.Map<IFormFile>(emp);
-                employee.Image = await _attachmentService.UploadAsync(emp?.Image, "Images");
-            }
-            return View(emp);
+            IFormFile emp1 = _mapper.Map<IFormFile>(employee);
+            if (emp1 is not null)
+                employee.Image = await _attachmentService.UploadAsync(emp.Image, "Images");
+            return View(employee);
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter

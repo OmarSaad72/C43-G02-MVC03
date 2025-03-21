@@ -8,6 +8,7 @@ using IKEA.DAL.Presistance.Repositories.Department;
 using IKEA.DAL.Presistance.Repositories.Employees;
 using IKEA.DAL.Presistance.UnitOfWork;
 using IKEA.PL.Mapping_Profile;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,8 +48,17 @@ namespace IKEA.PL
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequiredLength = 5;
             })
-                .AddEntityFrameworkStores<AppDbContext>();
-            builder.Services.AddAuthentication();
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();  //PasswordSignInAsync depend on ==> AddDefaultTokenProviders
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie
+                (
+                options =>
+                {
+                    options.LoginPath = "/Account/LogIn";
+                    options.AccessDeniedPath = "/Home/Error"; // Errors
+                    options.LogoutPath = "/Account/LogIn";
+                }
+                );
             #endregion
 
             var app = builder.Build();
@@ -66,11 +76,13 @@ namespace IKEA.PL
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Account}/{action=Register}/{id?}");
+                //pattern: "{controller=Account}/{action=Register}/{id?}");
+                pattern: "{controller=Account}/{action=LogIn}/{id?}");
 
             app.Run();
         }

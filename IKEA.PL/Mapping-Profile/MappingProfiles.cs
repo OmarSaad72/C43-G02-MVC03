@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IKEA.BLL.Common.Services.AttachmentService;
 using IKEA.BLL.Models.Department;
 using IKEA.BLL.ModelsDTOS.Employees;
 using IKEA.PL.View_Models.Department;
@@ -14,7 +15,7 @@ namespace IKEA.PL.Mapping_Profile
             CreateMap<EditCreateEmployeeDto, EditCreateEmployeeDto>();
             CreateMap<EmployeesDetailsReturnDto, EditCreateEmployeeDto>();
             CreateMap<EditCreateEmployeeDto, EmployeeEditVM>();
-            //CreateMap<EditCreateEmployeeDto, IFormFile>().ReverseMap();
+            CreateMap<EmployeesDetailsReturnDto, IFormFile>();
             #endregion
 
             #region Department

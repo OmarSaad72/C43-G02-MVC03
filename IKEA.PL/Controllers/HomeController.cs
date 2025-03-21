@@ -1,9 +1,11 @@
 using System.Diagnostics;
 using IKEA.PL.View_Models.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IKEA.PL.Controllers
 {
+    [Authorize] // Any One Authenticated Is Authorize
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
