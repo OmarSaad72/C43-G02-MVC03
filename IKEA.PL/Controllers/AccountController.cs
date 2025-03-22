@@ -1,4 +1,5 @@
-﻿using IKEA.DAL.Models.Identity;
+﻿using IKEA.BLL.Services.NewFolder;
+using IKEA.DAL.Models.Identity;
 using IKEA.PL.View_Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +10,13 @@ namespace IKEA.PL.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly IEmailSettings _emailSettings;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager, IEmailSettings emailSettings,SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
+            _emailSettings = emailSettings;
             _signInManager = signInManager;
         }
         [HttpGet]
@@ -92,11 +95,11 @@ namespace IKEA.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                var User = await _userManager.FindByEmailAsync(passwordVM.Email); // find user exist or not
-                if (User != null)
+                var user = await _userManager.FindByEmailAsync(passwordVM.Email); // find user exist or not
+                if (user != null)
                 {
                     // Create Email
-                    var token = await _userManager.GeneratePasswordResetTokenAsync(User);
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                     var url = Url.Action("ResetPassword", "Account", new { email = passwordVM.Email, token = token }, Request.Scheme);
                     var email = new Email()
                     {
@@ -105,11 +108,17 @@ namespace IKEA.PL.Controllers
                         Body = url // URL
                     };
                     // Send Email
-
+                    _emailSettings.SendEmail(email);
+                    return RedirectToAction(nameof(Checkbox));
                 }
                 ModelState.AddModelError(string.Empty, "Invalid Email");
             }
             return View(passwordVM);
+        }
+        [HttpGet]
+        public IActionResult Checkbox()
+        {
+            return View();
         }
     }
 }
