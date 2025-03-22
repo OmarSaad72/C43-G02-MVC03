@@ -4,6 +4,7 @@ using IKEA.PL.View_Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Configuration;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace IKEA.PL.Controllers
 {
@@ -13,7 +14,7 @@ namespace IKEA.PL.Controllers
         private readonly IEmailSettings _emailSettings;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public AccountController(UserManager<AppUser> userManager, IEmailSettings emailSettings,SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager, IEmailSettings emailSettings, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _emailSettings = emailSettings;
@@ -91,6 +92,7 @@ namespace IKEA.PL.Controllers
         {
             return View();
         }
+        [HttpPost]
         public async Task<IActionResult> SendResetPasswordUrl(ForgetPasswordVM passwordVM)
         {
             if (ModelState.IsValid)
@@ -119,6 +121,33 @@ namespace IKEA.PL.Controllers
         public IActionResult Checkbox()
         {
             return View();
+        }
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            TempData["email"] = email;
+            TempData["token"] = token;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordVM resetPasswordVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var email = TempData["email"] as string;
+                var token = TempData["token"] as string;
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user != null)
+                {
+                    var result = await _userManager.ResetPasswordAsync(user, token, resetPasswordVM.Password);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("LogIn");
+                    }
+                }
+            }
+            ModelState.AddModelError(string.Empty, "Invalid, Please Try Again Later");
+            return View(resetPasswordVM);
         }
     }
 }
