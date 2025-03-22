@@ -11,7 +11,7 @@ namespace IKEA.BLL.Services.Employees
     {
         Task<IEnumerable<EmployeeToReturnDto>> GetAllEmployeesAsync(string SearchValue);
          Task<EmployeesDetailsReturnDto?> GetEmployeeByIdAsync(int Id);
-         Task<int> CreateEmployeeAsync(EditCreateEmployeeDto Employee);
+         Task<int> CreateEmployeeAsync(CreatedEmployeeDto Employee);
          Task<int> UpdateEmployeeAsync(EditCreateEmployeeDto Employees);
          Task<bool> DeleteEmployeeAsync(int id);
     }

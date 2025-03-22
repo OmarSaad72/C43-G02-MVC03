@@ -34,8 +34,8 @@ namespace IKEA.PL
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();  //allow dependancy injection 
             //builder.Services.AddScoped<IEmployeesRepo, EmployeesRepo>();  //allow dependancy injection 
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();  //allow dependancy injection 
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();  //allow dependancy injection 
             builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfiles()));  // LifeTime: Transient
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();  //allow dependancy injection 
             builder.Services.AddTransient<IAttachmentService, AttachmentService>();
             //builder.Services.AddScoped<UserManager<AppUser>>();
             //builder.Services.AddScoped<RoleManager<IdentityRole>>();
@@ -57,8 +57,7 @@ namespace IKEA.PL
                     options.LoginPath = "/Account/LogIn";
                     options.AccessDeniedPath = "/Home/Error"; // Errors
                     options.LogoutPath = "/Account/LogIn";
-                }
-                );
+                });
             #endregion
 
             var app = builder.Build();

@@ -3,7 +3,6 @@ using IKEA.BLL.Common.Services.AttachmentService;
 using IKEA.BLL.Models.Department;
 using IKEA.BLL.ModelsDTOS.Employees;
 using IKEA.PL.View_Models.Department;
-using IKEA.PL.View_Models.Employee;
 
 namespace IKEA.PL.Mapping_Profile
 {
@@ -12,16 +11,16 @@ namespace IKEA.PL.Mapping_Profile
         public MappingProfiles()
         {
             #region Employee
-            CreateMap<EditCreateEmployeeDto, EditCreateEmployeeDto>();
             CreateMap<EmployeesDetailsReturnDto, EditCreateEmployeeDto>();
-            CreateMap<EditCreateEmployeeDto, EmployeeEditVM>();
-            CreateMap<EmployeesDetailsReturnDto, IFormFile>();
+            CreateMap<EditCreateEmployeeDto, EditCreateEmployeeDto>()
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Image));
+            CreateMap<EditCreateEmployeeDto, EditCreateEmployeeDto>();
             #endregion
 
             #region Department
-            CreateMap<DepartmentVM , CreatedDepartmentDto>();
-            CreateMap<DepartmentsDetailsReturnDto , DepartmentVM>();
-            CreateMap<DepartmentVM , UpdateDepartmentDto>();
+            CreateMap<DepartmentVM, CreatedDepartmentDto>();
+            CreateMap<DepartmentsDetailsReturnDto, DepartmentVM>();
+            CreateMap<DepartmentVM, UpdateDepartmentDto>();
             #endregion
         }
     }

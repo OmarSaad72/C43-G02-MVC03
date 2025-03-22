@@ -29,9 +29,9 @@ namespace IKEA.BLL.Services.Employees
             _unit = unit;
             _attachmentService = attachmentService;
         }
-        public async Task<int> CreateEmployeeAsync(EditCreateEmployeeDto Employee)
+        public async Task<int> CreateEmployeeAsync(CreatedEmployeeDto Employee)
         {
-            var emp = new Employee()
+            Employee emp = new Employee()
             {
                 Name = Employee.Name,
                 Age = Employee.Age,
@@ -117,7 +117,7 @@ namespace IKEA.BLL.Services.Employees
 
         public async Task<int> UpdateEmployeeAsync(EditCreateEmployeeDto Employee)
         {
-            var employee = new Employee()
+            Employee employee = new Employee()
             {
                 Id = Employee.Id,
                 Name = Employee.Name,

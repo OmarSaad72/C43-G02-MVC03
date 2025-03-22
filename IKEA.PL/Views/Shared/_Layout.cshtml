@@ -9,17 +9,51 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/IKEA.PL.styles.css" asp-append-version="true" />
     <style>
-        /* تعيين خلفية جميلة للصفحة */
-        body {
-            background-image: url('https://source.unsplash.com/1600x900/?furniture,interior');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+        :root {
+            --primary-color: #2C3E50; /* الأزرق الداكن */
+            --secondary-color: #27AE60; /* الأخضر المعتدل */
+            --accent-color: #E67E22; /* البرتقالي المعتدل */
+            --background-color: #ECF0F1; /* الرمادي الفاتح */
+            --text-color: #2C3E50; /* الأزرق الداكن */
         }
 
-        /* تحسين تصميم زر تسجيل الخروج */
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: #FFFFFF;
+            padding: 10px;
+            text-decoration: none;
+        }
+
+            nav a:hover {
+                background-color: var(--secondary-color);
+            }
+
+        button {
+            background-color: var(--accent-color);
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+            button:hover {
+                background-color: var(--secondary-color);
+            }
+
         .logout-btn {
-            padding: 10px 15px;
+            padding: 7px 10px;
             background-color: red;
             color: white;
             text-decoration: none;
@@ -57,7 +91,6 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
-                    <!-- زر تسجيل الخروج في أقصى اليمين -->
                     <a class="logout-btn ms-auto" asp-area="" asp-controller="Account" asp-action="SignOut">LogOut</a>
                 </div>
             </div>

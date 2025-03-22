@@ -83,5 +83,33 @@ namespace IKEA.PL.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("LogIn");
         }
+        [HttpGet]
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+        public async Task<IActionResult> SendResetPasswordUrl(ForgetPasswordVM passwordVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var User = await _userManager.FindByEmailAsync(passwordVM.Email); // find user exist or not
+                if (User != null)
+                {
+                    // Create Email
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(User);
+                    var url = Url.Action("ResetPassword", "Account", new { email = passwordVM.Email, token = token }, Request.Scheme);
+                    var email = new Email()
+                    {
+                        To = passwordVM.Email,
+                        Subject = "Reset Your Password",
+                        Body = url // URL
+                    };
+                    // Send Email
+
+                }
+                ModelState.AddModelError(string.Empty, "Invalid Email");
+            }
+            return View(passwordVM);
+        }
     }
 }

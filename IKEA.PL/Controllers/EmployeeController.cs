@@ -6,7 +6,6 @@ using IKEA.BLL.Services.Department;
 using IKEA.BLL.Services.Employees;
 using IKEA.DAL.Models.Employees;
 using IKEA.PL.Mapping_Profile;
-using IKEA.PL.View_Models.Employee;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,15 +44,15 @@ namespace IKEA.PL.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter
-        public async Task<IActionResult> Create(EditCreateEmployeeDto employee)
+        public async Task<IActionResult> Create(CreatedEmployeeDto employee)
         {
             if (!ModelState.IsValid)
                 return View(employee);
             var message = string.Empty;
             try
             {
-                var emp = _mapper.Map<EditCreateEmployeeDto, EditCreateEmployeeDto>(employee);
-                var result = await _EmployeeService.CreateEmployeeAsync(emp);
+                //var emp = _mapper.Map<EditCreateEmployeeDto>(employee);
+                var result = await _EmployeeService.CreateEmployeeAsync(employee);
                 if (result > 0)
                 {
                     TempData["Message"] = "Employee Created Successfully";
@@ -102,27 +101,26 @@ namespace IKEA.PL.Controllers
             var employee = await _EmployeeService.GetEmployeeByIdAsync(id.Value);
             if (employee == null)
                 return NotFound();
-            var emp = _mapper.Map<EmployeesDetailsReturnDto, EditCreateEmployeeDto>(employee);
-            IFormFile emp1 = _mapper.Map<IFormFile>(employee);
-            if (emp1 is not null)
-                employee.Image = await _attachmentService.UploadAsync(emp.Image, "Images");
-            return View(employee);
+            var emp = _mapper.Map<EmployeesDetailsReturnDto,EditCreateEmployeeDto>(employee);
+            //var emp1 = _mapper.Map<EditCreateEmployeeDto, EditCreateEmployeeDto>(emp);
+            return View(emp);
         }
         [HttpPost]
         [ValidateAntiForgeryToken] //Action Filter
         public async Task<IActionResult> Edit(int id, EditCreateEmployeeDto edit)
         {
             if (!ModelState.IsValid)
+            {
                 return View(edit);
+            }
             var message = string.Empty;
             try
             {
-                var emp = _mapper.Map<EditCreateEmployeeDto, EmployeeEditVM>(edit);
-                var result = await _EmployeeService.UpdateEmployeeAsync(edit);
+                var emp = _mapper.Map<EditCreateEmployeeDto, EditCreateEmployeeDto>(edit);
+                var result = await _EmployeeService.UpdateEmployeeAsync(emp);
                 if (result > 0)
                 {
                     TempData["Message"] = "Employee Updated Successfully";
-
                     return RedirectToAction(nameof(Index));
                 }
                 else
